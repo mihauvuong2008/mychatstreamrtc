@@ -1,0 +1,100 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+h2 {
+ color: Tomato;
+}
+a {
+  color: #00B7FF;
+}
+
+
+body {
+	/* background-image: url(BG.jpg), repeating-linear-gradient(180deg,rgba(255,255,255,0.14) 0%,rgba(255,151,151,1.00) 100%); */
+	background-size: 100% auto;
+}
+.login {
+	width: 300px;
+	height: 200px;
+	padding-top: 30px;
+	padding-right: 30px;
+	padding-bottom: 30px;
+	padding-left: 30px;
+	position: absolute;
+	top: 60px;
+	background-position: 0% 0%;
+	background-size: 102% auto;
+	-webkit-box-shadow: -2px 2px 5px 1px rgba(34,115,150,1.00);
+	box-shadow: -2px 2px 5px 1px rgba(34,115,150,1.00);
+	left: 19px;
+	background-image: url(box.jpg);
+}
+.signup {
+	width: 300px;
+	height: 350px;
+	padding-top: 30px;
+	padding-right: 30px;
+	padding-bottom: 30px;
+	padding-left: 30px;
+	position: absolute;
+	top: 60px;
+	background-position: 0% 0%;
+	background-size: 102% auto;
+	-webkit-box-shadow: -1px 2px 3px 1px rgba(34,115,150,1.00);
+	box-shadow: -1px 2px 3px 1px rgba(34,115,150,1.00);
+	left: 19px;
+	background-color: rgba(255,255,255,1.00);
+}
+.signup .signupbox {
+}
+.signupbox #signup .signuplabel {
+	margin-top: 6px;
+}
+
+
+.signupbox #signup .signuplabel label {
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+	color: rgba(36,114,156,1.00);
+	font-size: small;
+}
+
+.signupbox #signup .signupfield  {
+	margin-top: 5px;
+	margin-bottom: 8px;
+	margin-left: 15px;
+}
+#signup .signupfield input[type=text]  ,input[type=password] ,input[type=email] {
+	outline-color: transparent;
+	outline-style: none;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-bottom: 1px solid rgba(217,230,242,1.00);
+	font-size: small;
+	padding: 5px;
+	color: rgba(31,142,196,1.00);
+	width: 250px;
+}
+input:-internal-autofill-selected {
+    appearance: menulist-button;
+    background-color: white !important;
+    background-image: none !important;
+    color: -internal-light-dark(black, white) !important;
+}
+
+.signupbox #signup .signupbutton input[type=submit] {
+	outline-color: transparent;
+	outline-style: none;
+	border: none;
+	padding-top: 5px;
+	padding-right: 10px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	background-color: rgba(241,238,236,1.00);
+	color: rgba(174,156,145,1.00);
+}
+.signupbox #signup .signupbutton input[type=submit]:hover {
+	cursor: pointer;
+	background-color: rgba(245,245,245,1.00);
+}

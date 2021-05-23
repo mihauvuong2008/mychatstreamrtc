@@ -1,0 +1,26 @@
+express --view=hbs myChatapp
+npm install
+npm install --save-dev typescript
+npm audit fix
+npm install --save-dev tslint
+npm install --save-dev @types/node @types/express
+npm install --save-dev ts-node shelljs fs-extra nodemon rimraf npm-run-all
+npm install --save-dev @types/fs-extra @types/shelljs
+npm install dotenv
+npm install --save-dev @types/dotenv
+
+npm install --save-dev sequelize-cli
+npm install --save-dev jsonwebtoken
+npm install --save-dev morgan
+npm install --save-dev mysql
+npm install --save-dev sequelize
+npm install --save-dev mysql2
+npm install --save-dev passport
+npm install --save-dev passport-local
+npm install --save-dev formidable
+npm install --save-dev express-session
+npm install --save-dev express-handlebars
+npm install --save-dev bcrypt-nodejs
+npm install --save-dev mv
+npm install --save-dev webpack
+npm install --save-dev simple-peer

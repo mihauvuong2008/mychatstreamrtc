@@ -1,0 +1,176 @@
+@charset "utf-8";
+@keyframes expandwh {
+  from {
+    opacity: 0;
+    height: 0px;
+    width: 0px;
+    margin: 0px;
+  }
+}
+.contact {
+  left:  2px;
+  position: absolute;
+  width: 300px;
+  max-height: calc(100vh - 100px);
+  overflow: hidden;
+  padding-top: 8px;
+  background-color: #F9F9F9;
+  border: 1px solid #EBEBEB;
+  border-radius: 15px;
+  z-index: 1;
+  animation: expandwh 0.12s cubic-bezier(0,0, 1, 1)  0.1s both;
+}
+.contact .contactbean {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.contact .contactbean .contacttile {
+  padding: 0 5px 10px;
+  display: flex;
+  justify-content: center;
+}
+.contactbean .contacttile .contacttitleitem {
+  margin-left: 5px;
+  font-size: small;
+}
+.contactbean .contacttile .contacttitlename {
+  color: #5f5f5f;
+  text-align: center;
+  font-size: large;
+  font-weight: 600;
+  position: absolute;
+  max-width: 150px;
+  text-overflow: ellipsis;
+}
+.contactbean .contacttile .contactaccept {
+  margin-left: auto;
+  color: #8a8a8a;
+  cursor: pointer;
+}
+.contactbean .contacttile .contactaccept:hover {
+  color: #4a4a4a;
+  transition: color 0.2s linear;
+}
+.contactbean .contacttile .contactcancel {
+  padding-right: 5px;
+  color: #8a8a8a;
+  cursor: pointer;
+}
+.contactbean .contacttile .contactcancel:hover {
+  color: #b36969;
+  transition: color 0.2s linear;
+}
+.contact .contactbean .contactlist {
+  /* background-color: #FFFFFF; */
+  border-top: 1px solid #EBEBEB;
+  padding: 2px;
+  flex: 1;
+  background-color: #FFFFFF;
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+.contactbean .contactlist .contactitem {
+  display: flex;
+  align-items: center;
+  border-radius: 13px;
+  padding: 5px;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently*/
+  border: 1px solid transparent;
+  transition: all 0.2s linear;
+  position: relative;
+  z-index: 3;
+  cursor: pointer;
+}
+
+.contactbean .contactlist .contactitem:hover {
+  background-color: #FcFcFc;
+  border: 1px solid #EBEBEB;
+  transition: all 0.2s linear;
+  z-index: 3;
+}
+
+.contactlist .contactitem .contactavatar {
+  width: 30px;
+  height: 30px;
+  background-color: #bbd1ff;
+  border-radius: 15px;
+}
+
+.contactlist .contactitem .contactname {
+  flex: 1;
+  color: #676767;
+  font-size: large;
+  padding: 5px 5px 8px;
+  font-size: 16px;
+  max-width: 150px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.contactlist .contactitem .contactcallbean {
+  opacity: 0.2;
+  padding: 5px;
+  border-radius: 8px;
+  margin-right: 8px;
+  transition: background-color 0.2s linear;
+}
+
+.contactlist .contactitem .contactcallbean:hover {
+  opacity: 1;
+  background-color: rgba(205, 227, 205, 1.00);
+  transition: background-color 0.2s linear;
+}
+
+.contactlist .contactitem .contactcall {
+  width: 16px;
+  height: 16px;
+  background-image: url(phone-call.png);
+  background-size: 100% 100%;
+}
+
+.contactlist .contactitem .contactitemselect {
+  margin-left: auto;
+  margin-right: 8px;
+  padding:0 4px 0;
+}
+
+.contactitem .contactitemselect .contactitem_checker {
+  width: 15px;
+  height: 15px;
+}
+
+.removebutton {
+  opacity: 0;
+  margin-left: auto;
+  padding: 0 4px 0;
+  border-radius: 15px;
+  background-color: #f59e9f;
+  color: #6C6C6C;
+  transition: all 0.2s ease-in-out;
+}
+
+.contactbean .contactlist .contactitem:hover .removebutton {
+  opacity: 1;
+  padding: 4px 8px 4px;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+  z-index: 100;
+}
+
+.contactbean .contactlist .contactitem:hover .removebutton:hover {
+  background-color: #c57e7f;
+  transition: background-color 0.12s ease-in-out;
+  z-index: 100;
+}
+
+/* .contactbean .contactlist .contactitem:hover:has(.removebutton:hover) {
+
+} */

@@ -1,0 +1,223 @@
+@charset "utf-8";
+@import url("./chat/chatapp.css");
+@import url("./chat/chatbox.css");
+@import url("./chat/recentchatbox.css");
+@import url("./teamview/teamview.css");
+
+.mainmenu {
+  display: flex;
+  position: absolute;
+  height: 40px;
+  min-width: 420px;
+  background-color: #959aa5; /* #627AA6;*/
+  top: 0px;
+  left: 0px;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 3px;
+  /* box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.18);
+  -webkit-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.18); */
+  border-bottom-right-radius: 13px;
+  border: 1px solid #8e8e8e;
+}
+.mainmenu .mainmenuitem {
+  font-family: cursive;
+  font-size: 14px;
+  padding: 5px 10px 5px;
+  margin-right: 5px;
+  border-radius: 5px;
+  color: #EFEFEF;
+  font-weight: bold;
+  transition: color 0.12s linear;
+  cursor: pointer;
+}
+.mainmenu .mainmenuitem:hover {
+  color: #FDFDFD;
+  transition: color 0.12s linear;
+}
+.mainmenu .notify:hover {
+  background-color: #C10002;
+  transition: background-color 0.2s linear;
+}
+.mainmenu .havenotify {
+  background-color: #AD0001;
+  color: #F0F0F0;
+  font-size: normal;
+  font-weight: 700;
+}
+.mainmenu .userinfo {
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+  padding: 0 15px 0 5px;
+}
+.mainmenu .userinfo .useravatar {
+  width: 32px;
+  height: 32px;
+  background-color: #C3F2FF;
+  border-radius: 25px;
+}
+.mainmenu .userinfo .username {
+  margin-left: 5px;
+  font-family: Baskerville, "Palatino Linotype", Palatino, "Century Schoolbook L", "Times New Roman", serif;
+  font-weight: 600;
+  font-size: medium;
+  color: #FFFFFF;
+}
+.mainmenu .notify .havenotifyvalue {
+  color: #FFFFFF;
+}
+.noticepointer {
+  margin: 3px auto 0 10px;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 14px solid transparent;
+  border-bottom: 12px solid #F7F7F7;
+}
+.accountnotice {
+  float: left;
+  overflow: hidden;
+}
+.hideaccountnotify {
+  visibility: hidden;
+  display: block;
+  position: absolute;
+  overflow: hidden;
+  width: 0px;
+  height: 0px;
+  opacity: 0;
+  transition: all 0.12s ease-in-out;
+}
+.showaccountnotify {
+  visibility: visible;
+  display: block;
+  position: absolute;
+  top: 32px;
+  overflow: visible;
+  width: 400px;
+  height: 62vh;
+  opacity: 1;
+  z-index: 1;
+  transition: all 0.12s ease-in-out;
+}
+.accountnotice .hideaccountnotify .accountnotify {
+  display: block;
+  position: absolute;
+  opacity: 1;
+  overflow: hidden;
+  width: 0px;
+  height: 0px;
+  border-radius: 7px;
+  padding: 8px 10px 12px 10px;
+  border: 1px solid #EBEBEB;
+  background-color: #FFFFFF;
+  transition: all 0.12s ease-in-out;
+}
+.accountnotice .showaccountnotify .accountnotify {
+  display: block;
+  position: absolute;
+  opacity: 1;
+  overflow: auto;
+  width: 400px;
+  height: 62vh;
+  border-radius: 7px;
+  padding: 8px 10px 12px 10px;
+  border: 1px solid #EBEBEB;
+  background-color: #FFFFFF;
+  transition: all 0.12s ease-in-out;
+}
+.hideaccountnotify .accountnotifyitem {
+  font-family: "Monaco", "Courier New", monospace;
+  font-size: 12px;
+  width: 0px;
+  height: 0px;
+  display: flex;
+  left: 51px;
+  margin: 0 0 3px 0;
+  padding: 5px 0;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  border-bottom: 1px solid #F5F5F5;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently*/
+  transition: all 0.2s ease-in-out;
+}
+.showaccountnotify .accountnotifyitem {
+  font-family: "Monaco", "Courier New", monospace;
+  font-size: 12px;
+  display: flex;
+  left: 51px;
+  margin: 0 0 3px 0;
+  padding: 5px 0;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  border-bottom: 1px solid #F5F5F5;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently*/
+  transition: all 0.2s ease-in-out;
+}
+
+.accountnotice .accountnotifyitem .user .usericon {
+  width: 25px;
+  height: 25px;
+  border-radius: 14px;
+  background-color: rgba(26, 66, 255, 1.00);
+}
+
+.accountnotifyitem .user {
+  display: flex;
+  align-items: center;
+}
+.accountnotifyitem .user .username {
+  max-width: 100px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-weight: 600;
+  font-size: 14px;
+  margin-left: 8px;
+  color: #787878;
+}
+.accountnotifyitem .actionmessage {
+  flex: 1;
+  padding: 5px;
+  text-overflow: ellipsis;
+  min-width: 120px;
+  overflow: hidden;
+  font-size: 14px;
+  color: #696969;
+}
+.accountnotice .accountnotifyitem .respone {
+  margin-left: 8px;
+  height: 25px;
+  align-items: center;
+  display: flex;
+  color: #696969;
+  font-size: 14px;
+  transition: all 0.12s ease-in-out;
+  cursor: pointer;
+}
+
+
+.accountnotice .accountnotifyitem .confirm:hover {
+  color: rgba(73, 155, 73, 1.00);
+  transition: all 0.12s ease-in-out;
+}
+
+.accountnotice .accountnotifyitem .discare:hover {
+  cursor: pointer;
+  color: rgba(155, 77, 59, 1.00);
+  transition: all 0.12s ease-in-out;
+}

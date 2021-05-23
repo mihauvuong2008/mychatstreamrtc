@@ -1,0 +1,864 @@
+@charset "utf-8";
+
+.chatboxbean {
+  display: flex;
+  flex: 1;
+  margin-left: 2px;
+  align-content: center;
+  align-items: flex-end;
+  z-index: 2;
+}
+.chatboxbean .chatbox {
+  width: var(--chatlist-Width);
+  max-width: var(--chatlist-Width);
+  height: 65vh;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column-reverse;
+  flex-wrap: nowrap;
+  border: 1px solid #E1E1E1;
+  margin: 2px;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 13px;
+  transition: all .2s ease-in-out;
+}
+
+.chatboxmaximize {
+  height: calc(100vh - 55px) !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  transition: all .2s ease-in-out;
+}
+
+.chatboxbean .chatboxwindow {
+  position: absolute;
+  width: 400px;
+  top: 25px;
+  -webkit-box-shadow: 1px 2px 2px #D8D8D8;
+  box-shadow: 1px 2px 2px #D8D8D8;
+  resize: both;
+}
+.chatboxbean .chatboxminimize {
+  width: 190px;
+  min-width: 100px;
+  height: 45px;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column-reverse;
+  flex-wrap: nowrap;
+  border: 1px solid #E1E1E1;
+  margin: 2px;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 10px;
+  transition: all .2s ease-in-out;
+}
+
+.chatboxbean .chatbox .messagebox {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
+  position: relative;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 3px;
+  box-sizing: border-box;
+  background-color: #FFFFFF;
+  opacity: 1;
+  scroll-behavior: smooth;
+  transition: all .2s ease-in-out;
+}
+
+.chatboxbean .chatboxminimize .messagebox {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 0px;
+  position: relative;
+  overflow: hidden;
+  padding: 0px;
+  box-sizing: border-box;
+  opacity: 0;
+  transition: all .2s ease-in-out;
+}
+
+.chatboxbean .messagebox::-webkit-scrollbar {
+  width: 10.5px;
+}
+
+/* Track */
+.chatboxbean .messagebox::-webkit-scrollbar-track {
+  background-color: #ececec;
+  border-radius: 5px;
+}
+
+/* Handle */
+.chatboxbean .messagebox::-webkit-scrollbar-thumb {
+  background-color: #d5d5d5;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.chatboxbean .messagebox::-webkit-scrollbar-thumb:hover {
+  background-color: #cccccc;
+}
+
+.converstationinfo {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  transition: all .2s ease-in-out;
+}
+.converstationinfo .converstationstartat {
+  padding: 3px;
+  flex: 1;
+  color: #C0C0C0;
+  font-size: small;
+  text-align: center;
+  align-items: center;
+  position: relative;
+  transition: all .2s ease-in-out;
+}
+.converstationinfo .converstationstartat:before{
+  content : "";
+  position: absolute;
+  left: 20%;
+  bottom : 1px;
+  height : 0px;
+  width : 60%; /* or 100px */
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.chatboxbean .guestchatboxmessagae {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin: 3px auto 3px 3px;
+  max-width: 80%;
+}
+
+.chatboxbean .messageitem .messgetextpresend{
+  animation: expand 0.5s ease-in-out;
+}
+
+
+.chatboxbean .messageitem .messgetextbean {
+  position: relative;
+}
+.chatboxbean .messageitem .messgetext {
+  width: 100%;
+  font-family: monospace;
+  white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+  white-space: -webkit-pre-wrap; /* Chrome & Safari */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  white-space: pre-wrap; /* CSS3 */
+  word-wrap: break-word;
+  word-break: break-all;
+  border-radius: 15px;
+  padding: 7px 11px 7px;
+  box-sizing: border-box;
+  color: #ffffff;
+  font-size: 20px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.chatboxbean .messgetext.msguser {
+  background-color: #a6b0cc;
+  border: 1px solid #9198aa;
+  /* background-color: #acacac;
+  border: 1px solid #949494; */
+}
+
+.chatboxbean .messgetext.msgguest {
+  background-color: #f5f5f5;
+  border: 1px solid #ececec;
+  color: #546280;
+}
+
+.chatboxbean .messageitem .messageinfo {
+  visibility: visible;
+  display: block;
+  height: 15px;
+  width: 125px;
+  font-size: 12px;
+  margin: 4px 8px 1px;
+  overflow: hidden;
+  color: rgba(178, 178, 178, 1.00);
+  white-space: nowrap;
+  opacity: 1;
+  transition: all .2s linear;
+}
+.chatboxbean .messageitem .hidemessageinfo {
+  visibility: hidden;
+  display: block;
+  height: 0px;
+  width: 0px;
+  font-size: 0px;
+  margin: 0px 8px 1px;
+  overflow: hidden;
+  color: rgba(178, 178, 178, 1.00);
+  white-space: nowrap;
+  opacity: 0;
+  transition: all .2s linear;
+}
+.userchatboxmessagae .messageinfo {
+  text-align: right;
+}
+.userchatboxmessagae .hidemessageinfo {
+  text-align: right;
+}
+.guestchatboxmessagae .messageinfo {
+  text-align: left;
+}
+.guestchatboxmessagae .messageinfo {
+  text-align: left;
+}
+
+.chatboxbean .userchatboxmessagae {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-end;
+  margin: 3px;
+  margin-left: auto;
+  order: -1;
+  max-width: 80%;
+  flex-wrap: wrap;
+}
+.chatboxbean .messageitem {
+  display: flex;
+  box-sizing: border-box;
+  position: relative;
+  transition: all .2s ease-in-out;
+}
+
+.chatboxbean .messageitem .filetransferbean {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 4px;
+  align-items: flex-end;
+}
+.preview {
+  margin-left: auto;
+  display: flex;
+  margin: 5px 0;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.previewcontent {
+  object-fit: contain;
+  max-width: 30%;
+  width: 20%;
+  height: auto;
+  pointer-events: none;
+  /* border: 1px solid #4D4D4D; */
+}
+.chatboxbean .messageitem .filetransfer {
+  display: flex;
+  width: 40%;
+  min-width: 150px;
+  max-width: 500px;
+  align-items: center;
+  margin-left: auto;
+  height: 26px;
+  border-radius: 12px;
+  /* background-color: #f4f4f4; */
+}
+.chatboxbean .messageitem .filetransfericonbox {
+  padding: 6px;
+  margin: 2px;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+}
+.chatboxbean .messageitem .filetransfericon {
+  min-width: 16px;
+  min-height: 16px;
+  opacity: 0.55;
+  box-sizing: border-box;
+  background-size: 100% auto;
+  background-image: url(file.png);
+  transition: all 0.2s ease-in-out;
+}
+.chatboxbean .messageitem .filetransferstatusbar {
+  display: flex;
+  margin: 5px 10px 5px 0px;
+  height: 6%;
+  flex: 1;
+  background-color: #c9dbcf;
+  border-radius: 15px;
+  opacity: 0.65;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+}
+.chatboxbean .messageitem .filetransferprogressbar {
+  height: 100%;
+  width: 0%;
+  margin-right: auto;
+  border-radius: 15px;
+  background-color: #239947;
+  opacity: 0.65;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+}
+.chatboxbean .messageitem .filetransferbutton {
+  font-size: small;
+  margin: 7px 10px 7px 0px;
+  color: #7d7d7d;
+  cursor: pointer;
+}
+
+
+.chatboxbean .messageitem .filetransferdownload:hover {
+  color: #6e937a;
+  transition: color 0.2s linear;
+}
+
+.chatboxbean .messageitem .filetransfercancel:hover {
+  color: #b36969;
+  transition: color 0.2s linear;
+}
+
+
+.chatboxbean .mmfitembean {
+  display: flex;
+  margin: 3px;
+  overflow: hidden;
+}
+.chatboxbean .mmfitembeanuser {
+  justify-content: flex-end;
+  flex: 1;
+}
+.chatboxbean .mmfbean{
+  max-width: 80%;
+  overflow: hidden;
+}
+.chatboxbean .mmfitem {
+  opacity: 0.75;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  padding: 5px 10px 5px 5px;
+  border: 1px solid #e1e1e1;
+  border-radius: 15px;
+}
+
+.chatboxbean .mmfitemicon {
+  min-width: 45px;
+  max-width: 45px;
+  min-height: 45px;
+  max-height: 45px;
+  background-size: 100% auto;
+  background-image: url(file.jpg);
+  flex: 1;
+}
+
+.chatboxbean .mmfiteminfo {
+  display: flex;
+  flex-direction: column;
+  font-size: small;
+  overflow: hidden;
+}
+
+.chatboxbean .mmfitemname {
+  font-size: small;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chatboxbean .mmfitemsendeddate {
+  font-size: small;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chatboxbean .download {
+  font-size: small;
+  color: #9a7878;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.chatboxbean .download:hover {
+  color: #643838;
+  transition: all 0.2s ease-in-out;
+}
+
+.chatboxbean .messageitem .messageitem_icon {
+  min-width: 25px;
+  max-width: 25px;
+  min-height: 25px;
+  max-height: 25px;
+  background-color: #d8e5ff;
+  border-radius: 13px;
+  margin: 2px;
+}
+.chatboxbean .somebodytyping {
+  margin: 2px;
+  padding: 5px 8px 5px;
+  background-color: #EBEBEB;
+  border-radius: 16px;
+  order: -1;
+}
+.chatboxbean .chatbox .typingbox {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin: 7px 0 0px;
+  background-color: white;
+  padding: 3px;
+  transition: all 0.2s ease-in-out;
+}
+.chatboxbean .chatboxminimize .typingbox {
+  display: flex;
+  align-items: center;
+  height: 0px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 2px;
+  padding: 0px;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+}
+
+.sendfilebutton {
+  display: inline-block;
+  padding: 5px;
+  opacity: .2;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.sendfilebutton input[type="file"] {
+  display: none;
+}
+
+.sendfileico {
+  min-width: 16px;
+  min-height: 16px;
+  background-size: 100% auto;
+  background-image: url(file.png);
+  transition: all 0.2s ease-in-out;
+}
+
+.sendfilebutton:hover {
+  opacity: 1;
+  transition: all 0.2s ease-in-out;
+}
+
+.chatboxbean .mess {
+  width: 100%;
+  height: 20px;
+  resize: none;
+  max-height: 100px;
+  line-height: 20px;
+  background-color: #ececec;
+  border: 1px solid #dedede;
+  border-radius: 10px;
+  padding: 4px 8px 4px;
+  text-align: left;
+  justify-content: center;
+}
+
+.chatboxbean .mess:focus {
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.chatboxbean .sendbutton {
+  height: 30px;
+  box-sizing: border-box;
+  background-color: #00BE37;
+  margin: 0 5px;
+  padding: 5px 8px;
+  color: #FFFFFF;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.chatboxbean .sendbutton:hover {
+  background: #00d122;
+}
+.chatboxbean .chatbox .member {
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 30%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: rgba(255, 255, 255, 1.00);
+  border-bottom: 1px solid #F7F7F7;
+  opacity: 1;
+  scroll-behavior: smooth;
+  /* Firefox: */
+  scrollbar-width: none;
+  -webkit-flex-flow: row wrap;
+  transition: all 0.2s ease-in-out;
+}
+
+.chatboxbean .chatbox .member::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+.chatboxbean .chatbox .member::-webkit-scrollbar-track {
+  border-radius: 15px;
+  margin: 10px 0;
+  background: #d2b39f;
+  border-left: 1px solid white;
+  border-right: 3px solid white;
+}
+
+/* Handle */
+.chatboxbean .chatbox .member::-webkit-scrollbar-thumb {
+  border-right: 2px solid white;
+  background: #959aa5;
+}
+
+/* Handle on hover */
+.chatboxbean .chatbox .member::-webkit-scrollbar-thumb:hover {
+  background: #959aa5;
+}
+
+.chatboxbean .chatboxminimize .member {
+  display: flex;
+  flex-wrap: wrap;
+  height: 0px;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+.chatboxbean .memberitem {
+  margin: 2px 2px 0;
+  padding: 3px;
+  display: flex;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently*/
+  margin-bottom: 2px;
+  border-radius: 16px;
+  transition: all .2s ease-in-out;
+  cursor: pointer;
+}
+
+.chatboxbean .memberitem .onlinestatus {
+  background-color: #27FF46;
+  width: 10px;
+  height: 10px;
+  border-radius: 13px;
+  margin: 7.5px 5.5px 7.5px 2.5px;
+}
+.chatboxbean .memberitem .icon {
+  width: 25px;
+  height: 25px;
+  background-color: #d8e5ff;
+  border-radius: 13px;
+}
+
+.chatboxbean .memberitem .memberusername {
+  max-width: 125px;
+  margin-left: 5px;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 2px;
+  color: #696969;
+  transition: all 0.2s ease-in-out;
+}
+
+.chatboxbean .memberitem .memberusernamefull {
+  max-width: 100%;
+  transition: all 0.2s ease-in-out;
+}
+
+.chatboxbean .memberitem .removemember {
+  display: flex;
+  flex-direction: center;
+  align-items: center;
+  padding: 2px;
+}
+.chatboxbean .memberitem .removemember:hover {
+  color: rgba(244, 59, 59, 1.00);
+}
+.chatboxbean .memberitem .memberinvite {
+  background-color: #9fd2af;
+  border-radius: 20px;
+  padding: 3px 8px 3px;
+  color: rgba(255, 255, 255, 1.00);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+.chatboxbean .memberitem .memberinvite:hover {
+  background-color: #6fc189;
+  transition: background-color 0.2s ease-in-out;
+}
+.chatboxbean .memberitem .dissolution {
+  background-color: #d2b39f;
+  border-radius: 20px;
+  padding: 3px 8px 3px;
+  color: rgba(255, 255, 255, 1.00);
+  transition: background-color 0.2s ease-in-out;
+}
+.chatboxbean .memberitem .dissolution:hover {
+  background-color: #cf2727;
+  transition: background-color 0.2s ease-in-out;
+}
+.chatboxbean .memberitem .leave {
+  background-color: #d4d4d4;
+  border-radius: 20px;
+  padding: 3px 8px 3px;
+  color: rgba(255, 255, 255, 1.00);
+  transition: background-color 0.2s ease-in-out;
+}
+.chatboxbean .memberitem .leave:hover {
+  background-color: #969696;
+  transition: background-color 0.2s ease-in-out;
+}
+.chatboxbean .memberitem .livestream {
+  background-color: #9fb4d2;
+  border-radius: 20px;
+  padding: 3px 8px 3px;
+  color: rgba(255, 255, 255, 1.00);
+  transition: background-color 0.2s ease-in-out;
+}
+.chatboxbean .memberitem .livestream:hover {
+  background-color: #5d8ed3;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.chatboxbean .titlechatbox {
+  padding: 8px;
+  border-bottom: 1px solid #E1E1E1;
+  background-color: #ececec;
+  display: flex;
+  overflow: hidden;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently*/
+}
+.chatboxbean .titlechatbox .chatboxname {
+  width: 60%;
+  max-width: 60%;
+  margin-left: 5px;
+  /* color: #424242; */
+  color: #6f6f6f;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+  overflow: hidden;
+  font-size: 17px;
+}
+.chatboxbean .titlechatbox .chatboxname[contenteditable="true"] {
+  outline: 1px dashed transparent;
+  color: #0087bb;
+}
+.chatboxbean .titlechatbox .chatboxname[contenteditable="true"]:empty:before {
+  content: attr(placeholder);
+  pointer-events: none;
+  display: block; /* For Firefox */
+}
+.chatboxbean .titlechatbox .controlchatbox {
+  min-width: 80px;
+  width: 40%;
+  max-width: 40%;
+  justify-content: flex-end;
+  display: flex;
+  margin-left: auto;
+  order: 2;
+  overflow: auto;
+}
+.chatboxbean .titlechatbox .controlchatbox .chatbox_minimize {
+  border-bottom: 1px solid #8c8c8c;
+  min-height: 9px;
+  width: 9px;
+  min-width: 9px;
+  height: 9px;
+  margin: 4px 5px 8px 4px;
+  cursor: pointer;
+}
+.chatboxbean .titlechatbox .controlchatbox .chatbox_minimize:hover {
+  border-bottom: 1px solid #E90003;
+}
+.chatboxbean .titlechatbox .controlchatbox .chatbox_maximize {
+  max-width: 9px;
+  min-width: 9px;
+  max-height: 9px;
+  min-height: 9px;
+  margin: 4px 9px;
+  border: 1px solid #8c8c8c;
+  border-collapse: separate;
+  cursor: pointer;
+}
+.chatboxbean .titlechatbox .controlchatbox .chatbox_maximize:hover {
+  border: 1px solid #E90003;
+}
+.chatboxbean .titlechatbox .controlchatbox .chatbox_close {
+  color: #8c8c8c;
+  padding: 0px 3px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 18px;
+  cursor: pointer;
+}
+.chatboxbean .titlechatbox .controlchatbox .chatbox_close:hover {
+  color: #E90003;
+}
+
+.checksened {
+  visibility: visible;
+  display:inline-block;
+  width: 22px;
+  height:22px;
+  opacity: 1;
+  -ms-transform: rotate(45deg); /* IE 9 */
+  -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+  transform: rotate(45deg);
+  position: absolute;
+  right: -10px;
+  top: -6px;
+  transition: all 0.2s ease-in-out;
+}
+
+.hidechecksened {
+  visibility: hidden;
+  display:inline-block;
+  width: 22px;
+  height:22px;
+  opacity: 0;
+  -ms-transform: rotate(45deg); /* IE 9 */
+  -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+  transform: rotate(45deg);
+  position: absolute;
+  right: -10px;
+  top: -6px;
+  transition: all 0.2s ease-in-out;
+}
+.checksened_stem {
+  position: absolute;
+  width: 1px;
+  height: 7px;
+  background-color: #9fd2af;
+  left: 11px;
+  top: 8px;
+}
+
+.checksened_kick {
+  position: absolute;
+  width: 4px;
+  height: 1px;
+  background-color: #9fd2af;
+  left: 8px;
+  top: 14px;
+}
+
+.nomore {
+  color: #c58a8a;
+  padding: 5px;
+  font-size: normal;
+  text-align: center;
+  align-items: center;
+}
+
+.seenlistitem{
+  /* width: 100%; */
+  position: absolute;
+  right: 0;
+  bottom: -4px;
+}
+
+.seenlistitembean{
+  display: flex;
+  justify-content: flex-start;
+  /* flex-wrap: wrap; */
+}
+.seenitem{
+  margin-right: 1px;
+}
+.seenicon{
+  min-width: 10px;
+  min-height: 10px;
+  max-width: 10px;
+  max-height: 10px;
+  background: #d8e5ff;
+  border-radius: 10px;
+  border: 1px solid #9198aa;
+  /* border: 1px solid #949494; */
+  cursor: pointer;
+}
+
+.seentooltipdesc{
+  visibility: hidden;
+  top: -50%;
+  right: 100%;
+  margin-right: 3px;
+  display: inline;
+  position: absolute;
+  background-color: white;
+  border: 1px solid #9198aa;
+  color: #232323;
+  font-size: 13px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  z-index: 10;
+  opacity: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+.seenitem:hover .seentooltipdesc{
+  visibility: visible;
+  top: -50%;
+  right: 100%;
+  margin-right: 3px;
+  display: inline;
+  position: absolute;
+  background-color: white;
+  border: 1px solid #9198aa;
+  color: #232323;
+  font-size: 13px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  box-shadow: 0 0 25px 0 #e1e1e1;
+  z-index: 10;
+  opacity: 1;
+  transition: all 0.2s ease-in-out;
+}
+.memberteamviewbean{
+  padding: 4px;
+  opacity: 0.6;
+  transition: opacity 0.2s ease-in-out;
+}
+.memberteamviewbean:hover{
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}
+.memberteamview{
+  min-width: 16px;
+  min-height: 16px;
+  background-size: 100% auto;
+  background-image: url(teamview.png);
+  transition: all 0.2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+
+.hidememberteamview{
+  min-width: 0px;
+  min-height: 0px;
+  transition: all .2s ease-in-out;
+}

@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>chatapp</title>
+  <link rel="shortcut icon" href="#">
+  <style type="text/css">
+  @import url("./stylesheets/app.css");
+  @import url("./stylesheets/contact.css");
+  @import url("./stylesheets/puplebox.css");
+</style>
+
+<link rel="stylesheet" href="./stylesheets/contact.css">
+
+
+<script src="./javascripts/bundle.js"> </script>
+
+</head>
+
+<body id="bodyID">
+  <div class="mainmenu">
+    <div class="userinfo">
+      <div class="useravatar"> </div>
+      <div class="username"> username </div>
+    </div>
+    <div class="accountnotice">
+      <div id="menunotifyID" class="mainmenuitem notify">
+        <div id="menunotifyvalueID" class="notifyvalue"> 0 </div>
+      </div>
+      <div id="showaccountnotifyID" class="hideaccountnotify">
+        <div class="noticepointer"></div>
+        <div id="accountnotifyID" class="accountnotify">
+          <div class="accountnotifyitem">
+            <div class="user">
+              <div class="usericon"> </div>
+              <div class="username"> username </div>
+            </div>
+            <div class="actionmessage"> send addfriend request </div>
+            <div class="respone confirm">accept</div>
+            <div class="respone discare">discare</div>
+          </div>
+          <div class="accountnotifyitem">
+            <div class="user">
+              <div class="usericon"> </div>
+              <div class="username">username </div>
+            </div>
+            <div class="actionmessage"> send addfriend request </div>
+            <div class="respone">accept</div>
+            <div class="respone">discare</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="menucontactID" class="mainmenuitem menucontact">contact</div>
+    <div id="menusysdocumentID" class="mainmenuitem menusysdocument">sync document</div>
+    <div id="menuprofileID" class="mainmenuitem menuprofile">profile</div>
+    <div id="menusettingID" class="mainmenuitem menusetting">setting</div>
+  </div>
+  <div  id="pupleboxID" class="puplebox">
+    <div class="boxheader">
+      <div id="pupleID" class="puple"></div>
+      <div id="toolbarID" class="hidetoolbar">
+        <div id ="pupleuserNameID" class="user_name">your username</div>
+        <div  class="pptbseparate"></div>
+        <div id="logout_buttonID" class="toolbarbutton logout_button">logout</div>
+        <div id="login_buttonID" class="toolbarbutton login_button">login</div>
+        <div id="addfriendID" class="toolbarbutton addfriend">add friend</div>
+        <div id="newgroupID" class="toolbarbutton newgroup" >new group</div>
+        <div id="openstoryID" class="toolbarbutton openstory" >story</div>
+        <div id="hiderecentID" class="toolbarbutton hiderecent" >hide recent</div>
+      </div>
+    </div>
+    <div id="addfriendboxID" class="hideaddfriendbox">
+      <div class="addfriendboxquery" id="addfriendboxqueryID">
+        <textarea class="newfriendtext textbox" id="newfriendtextID" value=""></textarea>
+        <div id="searchbuttonID" class="searchbutton">Find contact</div>
+      </div>
+      <div id="addfriendsearchresultID" class="addfriendsearchresult" > </div>
+    </div>
+    <div id="creategroupboxID" class="hidecreategroupbox">
+      <div class="newgroupinfo">
+        <textarea id="newgrouptext"></textarea>
+        <div id="newgroupCreatebuttonID" class="creategroupbutton">Create group</div>
+      </div>
+      <div id="creategroup_friendlistID" class="creategroup_friendlist"> </div>
+    </div>
+  </div>
+  <div id="chatpanelID" class="chatpanel">
+    <div id="chatlistID" class="chatlist">
+      <div class="chatlistitem friend">
+        <div class="onlinestatus"> </div>
+        <div class="icon"> </div>
+        <div class="chatlistitemname"> username </div>
+      </div>
+      <div class="chatlistitem group">
+        <div class="onlinestatus"> </div>
+        <div class="groupicon">
+          <div class="groupicon"></div>
+          <div class="groupicon"></div>
+          <div class="groupicon"></div>
+        </div>
+        <div class="groupitemname">
+          <div class="chatlistitemname">Content for  class "groupname" Goes Here</div>
+        </div>
+      </div>
+    </div>
+    <div id="chatsubpanelID" class="chatsubpanel"> </div>
+    <div id="chatboxbeanID" class="chatboxbean"> </div>
+  </div>
+</body>
+
+<script>
+
+window.onload = (event) => {
+  window.init({{ userid }}, "{{ username }}");
+};
+
+</script>
+</html>

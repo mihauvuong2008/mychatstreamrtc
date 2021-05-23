@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<script src="./javascripts/chat/token.js"></script>
+<head>
+  <title>welcome chatapp</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+  <h2> Please wait...</h2>
+</body>
+<script>
+
+
+async function loadding(){
+  const accessToken = "{{ accessToken }}";
+  const refreshToken = "{{ refreshToken }}";
+  if(accessToken){
+    const tokensave = {accessToken:accessToken, refreshToken:refreshToken}
+    // console.log(tokensave);
+    await saveChatTOKEN(tokensave);
+    await sleep(20);// setup cookie to load chatapp
+    window.location.replace("/chatapp");
+  }
+}
+
+window.onload = (event) => {
+  loadding();
+};
+
+// script mouse layout
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+</script>
+
+</html>
