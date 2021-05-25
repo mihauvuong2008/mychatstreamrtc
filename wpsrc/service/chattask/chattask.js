@@ -189,7 +189,6 @@ export const chattask = {
     const dissolution = document.getElementById ("dissolutionID" + chtbxstkitem.chatboxid);
     const livestreamitem = document.getElementById ("livestreamID" + chtbxstkitem.chatboxid);
 
-
     switch (chtbxstkitem.type) {
       case CHATROOMTYPE.TYPEGROUP:
       if (!USER_ISKEY) {

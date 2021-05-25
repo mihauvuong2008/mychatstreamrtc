@@ -85,24 +85,25 @@ export const chatsvctsk = {
   updatechatboxlistdata: async function() {
     const chatboxlist = await getChatboxlist();
     if (!chatboxlist) return;
-    delete APPDATA.chatboxlist;
-    APPDATA.chatboxlist = chatboxlist;
     for (var item of chatboxlist) {
       await sleep(accessdelay);
       const members = await getchatboxMember(item.chatboxid);
       if (members) {delete item.members; item.members = members};
     }
+    delete APPDATA.chatboxlist;
+    APPDATA.chatboxlist = chatboxlist;
   },
 
   // chat box
   updatechatboxstack: function() {
     const chatboxlist = APPDATA.chatboxlist;
     ACBchatboxStackdata.forEach(chtbxstkitem => {
-      chatboxlist.forEach(chatboxlistitem => {
-        if(chtbxstkitem.chatboxid!=chatboxlistitem.chatboxid) return;
-        if (!chatboxlistitem.members) return;
+      chatboxlist.some(item => {
+        if(chtbxstkitem.chatboxid!=item.chatboxid) return;
+        if (!item.members) return true;
         delete chtbxstkitem.members;
-        chtbxstkitem.members = chatboxlistitem.members;
+        chtbxstkitem.members = item.members;
+        return true;
       });
     });
   },
@@ -226,9 +227,6 @@ export const chatsvctsk = {
       receive_chatdata_cache.forEach(item => {
         if (!item.success) return;
         receive_chatdata_cache.remove(item);
-        for (const prop of item.getOwnPropertyNames(obj)) {
-          delete obj[prop];
-        }
       });
     });
   },
@@ -240,9 +238,6 @@ export const chatsvctsk = {
       receive_streamdata_cache.forEach(item => {
         if (!item.success) return;
         receive_streamdata_cache.remove(item);
-        for (const prop of item.getOwnPropertyNames(obj)) {
-          delete obj[prop];
-        }
       });
     });
   },
@@ -254,9 +249,6 @@ export const chatsvctsk = {
       sending_chatdata_cache.forEach(item => {
         if (!item.success||!item.updateinbrowser) return;
         sending_chatdata_cache.remove(item);
-        for (const prop of item.getOwnPropertyNames(obj)) {
-          delete obj[prop];
-        }
       });
     });
   },
@@ -497,7 +489,7 @@ export const chatsvctsk = {
         chattask.updatecbxmemberinfo(chtbxstkitem);
       }
     }
-    ACBchatboxStackdata.some(refreshchatboxdata);
+    ACBchatboxStackdata.forEach(refreshchatboxdata);
   },
 
   chatboxclean: function() {
