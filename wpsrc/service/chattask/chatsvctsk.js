@@ -41,20 +41,21 @@ export const init = function (myapp, chttk, srvcetool, cbxcntrl, token, svrCom) 
 }
 
 export const chatsvctsk = {
-  
   userstilllivestream: function () {
+    const userstilllivestream = serverstreamcmnc.userstilllivestream;
     ACBchatboxStackdata.forEach(chtbxstkitem => {
-      serverstreamcmnc.userstilllivestream(chtbxstkitem.chatboxid);
+      userstilllivestream(chtbxstkitem.chatboxid);
     });
   },
 
   // chat list
   updatechatboxlistdata: async function() {
-    const chatboxlist = await(serverchatcmnc.getChatboxlist());
+    const chatboxlist = await serverchatcmnc.getChatboxlist();
+    const getchatboxMember = serverchatcmnc.getchatboxMember;
     if (!chatboxlist) return;
     APPDATA.chatboxlist = chatboxlist
     APPDATA.chatboxlist.forEach (async item => {
-      item.members = await(serverchatcmnc.getchatboxMember(item.chatboxid));
+      item.members = await getchatboxMember(item.chatboxid);
     });
   },
 
@@ -121,8 +122,8 @@ export const chatsvctsk = {
   },
 
   deepslp: function (chtSrvce) {
-    if(TOUCH.touchme||serviceTool.serviceIsWakingup()||chtSrvce.dpsleep.count>UPDATER.dpslp+1) return ;
-    if (chtSrvce.dpsleep.count<UPDATER.dpslp) {chtSrvce.dpsleep.count++; return} ;
+    if (TOUCH.touchme||serviceTool.serviceIsWakingup()||chtSrvce.dpsleep.count>UPDATER.dpslp+1) return;
+    if (chtSrvce.dpsleep.count<UPDATER.dpslp) {chtSrvce.dpsleep.count++; return};
     chtSrvce.dpsleep.gotoDeepsleep();//deepsleep
     chtSrvce.dpsleep.count = 0;
     console.log("goingtoDeepsleep");
@@ -136,25 +137,28 @@ export const chatsvctsk = {
   updtchtbxlistactivestt: function () {// update chat box list active
     const chatlist = [];
     const chatboxlist = APPDATA.chatboxlist;
+    const chatboxactivestt = chattask.chatboxactivestt;
     for (var chatbox of chatboxlist) { chatlist.push(chatbox.chatboxid); }
     chatboxlist.forEach(chatbox => {
-      chattask.chatboxactivestt(chatbox, chatlist);
+      chatboxactivestt(chatbox, chatlist);
     });
   },
 
   updtchtbxlistonlinestt: function () {// update chat box list online
     const chatboxlist = APPDATA.chatboxlist;
+    const chatlistonlinestt = chattask.chatlistonlinestt;
     chatboxlist.forEach(chatbox => {
-      chattask.chatlistonlinestt(chatbox);
+      chatlistonlinestt(chatbox);
     });
   },
 
   updtrecentchtbxonlinestt: async function () {// update recent chat box list online
     const chatboxlist = APPDATA.chatboxlist;
+    const recentonlinestt = chattask.recentonlinestt;
     const setuprecentchatboxOnline = recentchtbx => {
       chatboxlist.forEach(chatboxlistitem => {
         if(recentchtbx.chatboxid==chatboxlistitem.chatboxid) {
-          chattask.recentonlinestt(recentchtbx, chatboxlistitem);
+          recentonlinestt(recentchtbx, chatboxlistitem);
           return true;
         }
       });
@@ -163,11 +167,11 @@ export const chatsvctsk = {
   },
 
   updtchtbxmemberonlinestt: function () {// update recent chat box mem online
+    const memberonlinestt = chattask.memberonlinestt;
     const setupchatboxMemberonline = async chtbxstkitem => {
-      await chattask.memberonlinestt(chtbxstkitem);
+      memberonlinestt(chtbxstkitem);
     }
     ACBchatboxStackdata.forEach(setupchatboxMemberonline);
-
   },
 
   // token
@@ -178,33 +182,35 @@ export const chatsvctsk = {
   },
 
   // chat
-
   refreshmsgreceivecache: function () {
     ACBchatboxStackdata.forEach(chtbxstkitem => {
-      if (chtbxstkitem.receive_chatdata_cache.length < chtbxstkitem.cachelen) return ;
-      chtbxstkitem.receive_chatdata_cache.forEach(item => {
+      const receive_chatdata_cache = chtbxstkitem.receive_chatdata_cache;
+      if (receive_chatdata_cache.length < chtbxstkitem.cachelen) return ;
+      receive_chatdata_cache.forEach(item => {
         if (!item.success) return;
-        chtbxstkitem.receive_chatdata_cache.remove(item);
+        receive_chatdata_cache.remove(item);
       });
     });
   },
 
   refreshmmfreceivecache: function () {
     ACBchatboxStackdata.forEach(chtbxstkitem => {
-      if (chtbxstkitem.receive_streamdata_cache.length < chtbxstkitem.cachelen) return ;
-      chtbxstkitem.receive_streamdata_cache.forEach(item => {
+      const receive_streamdata_cache = chtbxstkitem.receive_streamdata_cache;
+      if (receive_streamdata_cache.length < chtbxstkitem.cachelen) return ;
+      receive_streamdata_cache.forEach(item => {
         if (!item.success) return;
-        chtbxstkitem.receive_streamdata_cache.remove(item);
+        receive_streamdata_cache.remove(item);
       });
     });
   },
 
   refreshcbsendingcache: function () {
     ACBchatboxStackdata.forEach(chtbxstkitem => {
-      if (chtbxstkitem.sending_chatdata_cache.length < chtbxstkitem.cachelen) return ;
-      chtbxstkitem.sending_chatdata_cache.forEach(item => {
+      const sending_chatdata_cache = chtbxstkitem.sending_chatdata_cache;
+      if (sending_chatdata_cache.length < chtbxstkitem.cachelen) return ;
+      sending_chatdata_cache.forEach(item => {
         if (!item.success||!item.updateinbrowser) return;
-        chtbxstkitem.sending_chatdata_cache.remove(item);
+        sending_chatdata_cache.remove(item);
       });
     });
   },
@@ -231,35 +237,40 @@ export const chatsvctsk = {
         if(item.sendingcount>=1) continue;
         item.sendingcount += 1;
         await sleep(50);
-        const rs = await sender(conversationid, item);
-        if(rs.unhideUsermindid) {
-          item.resID = rs.unhideUsermindid;
-          item.success = true;
+        await sender(conversationid, item).
+        then((rs)=>{
+          if(rs&&rs.unhideUsermindid) {
+            item.resID = rs.unhideUsermindid;
+            item.success = true;
+            item.sended = true;// set sended to borowser update
+            return;
+          }
+          item.success = false;
           item.sended = true;// set sended to borowser update
-          continue;
-        }
-        item.success = false;
-        item.sended = true;// set sended to borowser update
+        });
       }
     };
   },
 
   updatemessagesended: function () {
+    const browser_updt_chbxmsgitem_sendedstt = chattask.browser_updt_chbxmsgitem_sendedstt;
     ACBchatboxStackdata.forEach (async chtbxstkitem => {
       if(chtbxstkitem.conversation==null) return;
       for (var item of chtbxstkitem.sending_chatdata_cache) {
         if(!item.sended||item.updateinbrowser) continue;
-        chattask.browser_updt_chbxmsgitem_sendedstt(item);
+        browser_updt_chbxmsgitem_sendedstt(item);
       }
     });
   },
 
   setmessagereaded: function () {
     //set message is readed
+    const setmessageReaded = serverchatcmnc.setmessageReaded;
+    const newDate = getDateString(new Date ());
     const setcachedataisReaded = async (chtbxstkitem, item) => {
       if (!item.viewinbrowser||item.success||item.sended||item.datetimeread != null ||item.unhideuserid==USERDATA.ID) return;
       item.sendingcount += 1;
-      const rs = (await serverchatcmnc.setmessageReaded(item.unhideUsermindid, getDateString(new Date ())));// set item.success = res;
+      const rs = await setmessageReaded(item.unhideUsermindid, newDate);// set item.success = res;
       if(rs[0]>=1) {
         item.success = true;
         item.sended = true;
@@ -274,26 +285,28 @@ export const chatsvctsk = {
   },
 
   setseenmessage: function () {
+    const brownser_show_seenmessage = chattask.brownser_show_seenmessage;
     ACBchatboxStackdata.forEach (chtbxstkitem => {
-      chattask.brownser_show_seenmessage (chtbxstkitem); //
+      brownser_show_seenmessage(chtbxstkitem); //
     });
   },
 
   insert_msgitmrecei_tochbx: function () {
+    const brownser_insert_msgitmrecei_tochbx = chattask.brownser_insert_msgitmrecei_tochbx;
     const setcachedataisReaded = (chtbxstkitem, item) => {
       if (item.sended||item.datetimeread != null ||item.unhideuserid==USERDATA.ID||item.viewinbrowser) return;
-      chattask.brownser_insert_msgitmrecei_tochbx (chtbxstkitem, item); // show new message from cache
+      brownser_insert_msgitmrecei_tochbx (chtbxstkitem, item); // show new message from cache
     }
-
     ACBchatboxStackdata.forEach (chtbxstkitem => {
       chtbxstkitem.receive_chatdata_cache.forEach(setcachedataisReaded.bind(null, chtbxstkitem));
     });
   },
 
   insert_mmfitmrecei_tochbx: function () {
+    const brownser_insert_mmfitmrecei_tochbx = chattask.brownser_insert_mmfitmrecei_tochbx;
     const setcachedataisReaded = (chtbxstkitem, item) => {
       if (item.viewinbrowser) return;
-      chattask.brownser_insert_mmfitmrecei_tochbx (chtbxstkitem, item/*multimedia file*/); // show new message from cache
+      brownser_insert_mmfitmrecei_tochbx (chtbxstkitem, item/*multimedia file*/); // show new message from cache
     }
     ACBchatboxStackdata.forEach (chtbxstkitem => {
       chtbxstkitem.receive_streamdata_cache.forEach(setcachedataisReaded.bind(null, chtbxstkitem));
@@ -301,8 +314,9 @@ export const chatsvctsk = {
   },
 
   resort_receimsgitem_chtbx: function () {
+    const resort_msgitmrecei_inchbx = chattask.resort_msgitmrecei_inchbx;
     const resortchatboxmsg = async (chtbxstkitem, item) => {
-      chattask.resort_msgitmrecei_inchbx(chtbxstkitem, item);
+      resort_msgitmrecei_inchbx(chtbxstkitem, item);
     }
     ACBchatboxStackdata.forEach (chtbxstkitem => {
       chtbxstkitem.receive_chatdata_cache.forEach(resortchatboxmsg.bind(null, chtbxstkitem));
@@ -310,42 +324,52 @@ export const chatsvctsk = {
   },
 
   getchatdatafromserver: function () {
+    const load_receivedchtbxmsg_tocache = chatsvctsktool.load_receivedchtbxmsg_tocache;
     ACBchatboxStackdata.forEach(item => {
-      chatsvctsktool.load_receivedchtbxmsg_tocache (item);
+      load_receivedchtbxmsg_tocache(item);
     });
   },
 
   getstreamdatafromserver: function () {
+    const load_streamdata_tocache = chatsvctsktool.load_streamdata_tocache;
     ACBchatboxStackdata.forEach(item => {
-      chatsvctsktool.load_streamdata_tocache (item);
+      load_streamdata_tocache(item);
     });
   },
 
   updateconversation: function () {
+    const makeNewConversation = chatsvctsktool.makeNewConversation;
     for (var chtbxstkitem of ACBchatboxStackdata) {
       if(!chtbxstkitem.MAKECONVERSATION || chtbxstkitem.conversation != null) continue;
       chtbxstkitem.MAKECONVERSATION = false;
-      chatsvctsktool.makeNewConversation(chtbxstkitem);
+      makeNewConversation(chtbxstkitem);
     };
   },
 
   clearConversation: function () {
+    const clearOldConversation = chatsvctsktool.clearOldConversation;
     ACBchatboxStackdata.forEach(chtbxstkitem => {
-      chatsvctsktool.clearOldConversation(chtbxstkitem /*chatbox*/);
+      clearOldConversation(chtbxstkitem /*chatbox*/);
     });
   },
 
   // notice
   getmakerelateevent:async function() {
-    APPNOTICE.makerelateRequest = (await serverchatcmnc.getMakerelateNotify());
+    const makerelateRequest = await serverchatcmnc.getMakerelateNotify();
+    if (!makerelateRequest) return;
+    APPNOTICE.makerelateRequest = makerelateRequest;
   },
 
   getinvitechatboxevent:async function() {
-    APPNOTICE.invitechatboxNotify = (await serverchatcmnc.getInvitechatboxNotify());
+    const invitechatboxNotify = await serverchatcmnc.getInvitechatboxNotify();
+    if (!invitechatboxNotify) return;
+    APPNOTICE.invitechatboxNotify = invitechatboxNotify;
   },
 
   getchatnotievent:async function() {
-    APPNOTICE.chatboxUnreadmessage = (await serverchatcmnc.getchatNotify());// save to query
+    const chatNotify = await serverchatcmnc.getchatNotify();
+    if (!chatNotify) return;
+    APPNOTICE.chatboxUnreadmessage = chatNotify;// save to query
   },
 
   setchatboxlistnotice: function() {
@@ -354,9 +378,10 @@ export const chatsvctsk = {
       if (item.chatboxid == item_.chatboxid) {item_.totalnoticecount = item.totalnoticecount; return true;}
     }
     const chatboxlist = APPDATA.chatboxlist;
+    const chatboxUnreadmessage = APPNOTICE.chatboxUnreadmessage;
     chatboxlist.some (item_ => {
       item_.totalnoticecount = 0;
-      APPNOTICE.chatboxUnreadmessage.some(noticesetup.bind(null, item_));
+      chatboxUnreadmessage.some(noticesetup.bind(null, item_));
     });
   },
 
@@ -364,23 +389,26 @@ export const chatsvctsk = {
     const noticesetup = (item_, item) => {
       if (item.chatboxid == item_.chatboxid) {item_.totalnoticecount = item.totalnoticecount; return true;}
     }
+    const chatboxUnreadmessage = APPNOTICE.chatboxUnreadmessage;
     ACBrecentchatboxdata.some(item_ => {
       item_.totalnoticecount = 0;
-      APPNOTICE.chatboxUnreadmessage.some(noticesetup.bind(null, item_));
+      chatboxUnreadmessage.some(noticesetup.bind(null, item_));
     });
   },
 
   showchatlistnotify: function () {
     const chatboxlist = APPDATA.chatboxlist;
+    const brownser_update_chatlistnotice = chattask.brownser_update_chatlistnotice;
     chatboxlist.forEach(item => {
-      chattask.brownser_update_chatlistnotice (item.chatboxid, item.totalnoticecount);
+      brownser_update_chatlistnotice (item.chatboxid, item.totalnoticecount);
     });
   },
 
   showrecentnotify: function () {
     const chatboxlist = APPDATA.chatboxlist;
+    const browser_update_recentnotice = chattask.browser_update_recentnotice;
     chatboxlist.forEach(item => {
-      chattask.browser_update_recentnotice (item.chatboxid, item.totalnoticecount);
+      browser_update_recentnotice(item.chatboxid, item.totalnoticecount);
     });
   },
 
@@ -391,8 +419,9 @@ export const chatsvctsk = {
   // refresh page
   chatlistrefresh: function() {
     const chatboxlist = APPDATA.chatboxlist;
+    const refreshchatlistitem = chattask.refreshchatlistitem;
     chatboxlist.forEach(chatbox =>{
-      chattask.refreshchatlistitem(chatbox);
+      refreshchatlistitem(chatbox);
     });
   },
 
@@ -403,8 +432,9 @@ export const chatsvctsk = {
   newchatlistitem:function () {
     const chatboxlist = APPDATA.chatboxlist;
     const len = chatboxlist.length;
+    const appendnewchatlistitem = chattask.appendnewchatlistitem;
     chatboxlist.forEach((chatbox, i) => {
-      chattask.appendnewchatlistitem(chatbox, i, chatboxlist.length);
+      appendnewchatlistitem(chatbox, i, chatboxlist.length);
     });
   },
 
@@ -473,12 +503,13 @@ const chatsvctsktool = {
     if(!chtbxstkitem.conversation) return;
     if(!chtbxstkitem.initcomplete) return;
 
-    const chatboxUnreadmessage = await(serverchatcmnc.getChatboxUnreadmessage (chtbxstkitem.conversation.conversationid));// check match id and load
+    const chatboxUnreadmessage = await serverchatcmnc.getChatboxUnreadmessage (chtbxstkitem.conversation.conversationid);// check match id and load
     if (!chatboxUnreadmessage) return;
+    const receive_chatdata_cache = chtbxstkitem.receive_chatdata_cache;
     const setupReceiveChatdataCache = (convMessageitem, i) => {
       //dont add double:
       const getisdoubleitem = item => { if(item.unhideUsermindid==convMessageitem.unhideUsermindid) return true; }
-      const dontadddouble = chtbxstkitem.receive_chatdata_cache.some(getisdoubleitem);
+      const dontadddouble = receive_chatdata_cache.some(getisdoubleitem);
       if (dontadddouble) return;
       const receivchat_data = {
         unhideUsermindid: convMessageitem.unhideUsermindid,
@@ -494,7 +525,7 @@ const chatsvctsktool = {
         viewinbrowser: false,// wait for load to chatbox
       };
       setTimeout(function() {
-        chtbxstkitem.receive_chatdata_cache.push(receivchat_data);
+        receive_chatdata_cache.push(receivchat_data);
       }, 25);
       if(i>50) return true;// for 50 per load
     }
@@ -505,11 +536,12 @@ const chatsvctsktool = {
     if(!chtbxstkitem.conversation) return;
     if(!chtbxstkitem.initcomplete) return;
     const chatboxStreamdatareceiv = await serverstreamcmnc.getChatboxUnreadmessage(chtbxstkitem.conversation.conversationid);
+    const receive_streamdata_cache = chtbxstkitem.receive_streamdata_cache;
 
     const setupReceiveMultimediafile = (convMmediafileitem, i) => {
       //dont add double:
       const getisdoubleitem = item => { if(item.unhideUsermindid==convMmediafileitem.unhideUsermindid) return true; }
-      const dontadddouble = chtbxstkitem.receive_streamdata_cache.some(getisdoubleitem);
+      const dontadddouble = receive_streamdata_cache.some(getisdoubleitem);
       if (dontadddouble) return;
       const receivchat_data = {
         unhideUsermindid: convMmediafileitem.unhideUsermindid,
@@ -523,7 +555,7 @@ const chatsvctsktool = {
         sendingcount: 0,
         viewinbrowser: false,// wait for load to chatbox
       };
-      chtbxstkitem.receive_streamdata_cache.push(receivchat_data);
+      receive_streamdata_cache.push(receivchat_data);
       if(i>50) return true;// for 50 per load
     }
     if(chatboxStreamdatareceiv)

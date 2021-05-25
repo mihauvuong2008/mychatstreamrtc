@@ -27,12 +27,12 @@ export const init = function (myapp, srvcetool, cbtool, cbxcntrl, svrCom) {
 export const chattask = {
 
   chatboxactivestt: function (chatbox, chatlist) {
-      serverstreamcmnc.getactiveChatboxlist(chatlist)
-      .then(activeChatboxlist => {
-        const setupActive = item_ => {if (item_ == chatbox.chatboxid) return true;}
-        const active = (activeChatboxlist||[]).some(setupActive);
-        chattasktool.chatboxactivestate(chatbox.chatboxid, active);
-      });
+    serverstreamcmnc.getactiveChatboxlist(chatlist)
+    .then(activeChatboxlist => {
+      const setupActive = item_ => {if (item_ == chatbox.chatboxid) return true;}
+      const active = (activeChatboxlist||[]).some(setupActive);
+      chattasktool.chatboxactivestate(chatbox.chatboxid, active);
+    });
   },
 
   chatlistonlinestt: function (chatbox) {
@@ -364,6 +364,7 @@ export const chattask = {
     const minY = messagebox.getBoundingClientRect().y;
     const maxY = minY + messagebox.getBoundingClientRect().height;
     let unhideUsermindid, seenlistitem, seenlist;
+    const getSeenlist = serverchatcmnc.getSeenlist;
     try {
       for (var message of document.querySelectorAll("[class=userchatboxmessagae]")) {
         const pos = message.getBoundingClientRect().y;
@@ -371,7 +372,7 @@ export const chattask = {
           case (pos>maxY||pos<minY):continue;
           case !(unhideUsermindid = message.parentNode.getAttribute("unhideusermindid")):continue;
           case !(seenlistitem = document.getElementById("seenlistitemID" + unhideUsermindid)):continue;
-          case !(seenlist = await (serverchatcmnc.getSeenlist(unhideUsermindid))):continue;
+          case !(seenlist = await getSeenlist(unhideUsermindid)):continue;
           case (seenlist.length == members.length):continue;
         }
         (seenlist||[]).forEach(item => {
@@ -485,14 +486,17 @@ export const chattask = {
       hidemessageinfo.innerHTML = "send fail, click to resend";
       hidemessageinfo.className = "messageinfo";
       messgetext.addEventListener ("click", function(){
-        const messageitem = document.getElementById ("sended" + item.post_data_id);
+        const messageitem = document.getElementById ("tempmessageitemID" + item.post_data_id);
+        console.log("tempmessageitemID" + item.post_data_id);
         if (!messageitem||!item.sended) return;
         messageitem.id = "tempmessageitemID" + item.post_data_id;
         //show hand to user resend
         item.sended = false;
         item.success = false;
-        item.viewinbrowser = false;
+        item.updateinbrowser = false;
+        item.sendingcount = 0;
         messgetext.style.backgroundColor = "";
+        messgetext.style.borderColor = "";
       });
       messgetext.style.backgroundColor = "#E00003";
       messgetext.style.borderColor = "#a80003";
@@ -530,11 +534,11 @@ export const chattask = {
     const olderMsg = messagebox.getElementsByClassName('messageitem')[0]; // get curr oldest message in chatbox
     if (olderMsg) {
       const unhideUsermindid = olderMsg.getAttribute("unhideUsermindid");
-      conversationData = await (serverchatcmnc.getconversationData(firstconverstationid, unhideUsermindid));
+      conversationData = await serverchatcmnc.getconversationData(firstconverstationid, unhideUsermindid);
     }
     if(conversationData.length==0||!olderMsg) {// add new conversation to loadmoremsg
       // get older conversation
-      const conversation = await (serverchatcmnc.getLastConversation(chatboxid, converstationEndat));
+      const conversation = await serverchatcmnc.getLastConversation(chatboxid, converstationEndat);
       if (!conversation) {
         chtbxstkitem.NOMORE = true;
         const nomore = dmt.domtool.creatediv("nomore");

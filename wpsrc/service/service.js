@@ -32,22 +32,23 @@ class chatService {
 
   wakeupService() {
     new Promise(function(resolve, reject) {
-      chatService.prototype.clearService();
-      chatService.prototype.initService();
-      resolve();
-    }).then(async ()=>{
-      await this.startUpdater(true);
-      console.log("service wakeup");
+      resolve(chatService.prototype.clearService()&&chatService.prototype.initService());
+    }).then((result)=>{
+      if (!result)return;
+      console.log("service wakeup", result);
+      this.startUpdater(true);
     });
   }
 
   initService(){
     serviceTool.resetTicket();
     serviceTool.resetDelay();
+    return true;
   }
 
   clearService(){
     serviceTool.clearUpdater();
+    return true;
   }
 
   async startUpdater(wakeup) {
@@ -150,7 +151,7 @@ class chatService {
     UPDATER.olnstatusrate.timeoutid = setInterval( async ()=>{
       try {
         //tokenExtend
-        await chatsvctsk.tokenExtend();
+        chatsvctsk.tokenExtend();
 
         //online state:
 
@@ -240,6 +241,7 @@ class chatService {
 
         chatsvctsk.getstreamdatafromserver();
 
+
         chatsvctsk.clearConversation();
 
         // item notify
@@ -247,6 +249,7 @@ class chatService {
 
         // item notify
         chatsvctsk.setrecentnotic();
+
 
       } catch (e) {
         console.log(e);
@@ -270,7 +273,7 @@ class chatService {
         chatsvctsk.setnewconversation();
 
         //send and set readed chat data; update browsers - send message
-        await chatsvctsk.sendmessage();
+        chatsvctsk.sendmessage();
 
 
         chatsvctsk.updatemessagesended();
@@ -321,8 +324,6 @@ class chatService {
     // wakeup And deep sleep service
     if(serviceTool.serviceIsWakingup()) return ;
 
-    console.log(serviceTool.serviceIsWakingup(), "Action");
-
     // update Touch:
     chatsvctsk.gettouch();
 
@@ -331,10 +332,10 @@ class chatService {
 
 } /** // END CHAT SERVICE CLASS DECLARE */
 
-
 /**
 *
 * // DECLARE CHAT SERVICE: _chatService : ble ble
 *
 */
+
 export const _chatService = new chatService();
