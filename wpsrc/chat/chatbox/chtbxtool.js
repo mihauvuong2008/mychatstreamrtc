@@ -103,7 +103,7 @@ export const chtbxtool = {
       const idx = ACBrecentchatboxdata.length - ACBrecentchatbox.maxRecent;
       for (var i = 0; i < idx; i++) {
         const recentitem = document.getElementById("recentchatboxID" + ACBrecentchatboxdata[i].chatboxid);// remove now, you will lost it
-        if (recentitem) recentitem.remove();
+        if (recentitem) {recentitem.remove()};
         ACBrecentchatboxdata.remove(ACBrecentchatboxdata[i]);
       }
     }

@@ -167,6 +167,7 @@ class chatService {
         //update member
         chatsvctsk.updtchtbxmemberonlinestt();
 
+
       } catch (e) {
         console.log(e);
       }
@@ -191,6 +192,8 @@ class chatService {
         // event
         chatsvctsk.getchatnotievent();
 
+
+
         // refresh
         chatsvctsk.chatlistrefresh();
 
@@ -205,6 +208,7 @@ class chatService {
 
 
         chatsvctsk.chatboxclean();
+
 
 
         chatsvctsk.refreshmsgreceivecache();
@@ -271,17 +275,17 @@ class chatService {
       try {
 
         chatsvctsk.setnewconversation();
-
-        //send and set readed chat data; update browsers - send message
+        //
+        // //send and set readed chat data; update browsers - send message
         chatsvctsk.sendmessage();
-
-
+        //
+        //
         chatsvctsk.updatemessagesended();
-
-        //send and set readed chat data; update browsers - send message
+        //
+        // //send and set readed chat data; update browsers - send message
         chatsvctsk.setmessagereaded();
-
-
+        //
+        //
         chatsvctsk.setseenmessage();
 
 

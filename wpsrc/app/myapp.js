@@ -19,7 +19,7 @@ export const MOUSESTATE = {LEFTMOUSEBUTTONONLYDOWN: false, PRESSANDMOVE: false};
 export const UPDATER = {// sevice delay
   neweventrate: {timeoutid: 0, delay: 3000, fullpower: 3000, limittocldn: 380, cldnrate: 20, cldnstep: 300, cldndelay: 1200},
   srvrcchrate: {timeoutid: 0, delay: 3000, fullpower: 3000, limittocldn: 380, cldnrate: 20, cldnstep: 300, cldndelay: 1200},
-  brnsrcchrate: {timeoutid: 0, delay: 1000, fullpower: 1000, limittocldn: 180, cldnrate: 10,cldnstep: 100, cldndelay: 1200},
+  brnsrcchrate: {timeoutid: 0, delay: 1000, fullpower: 1000, limittocldn: 280, cldnrate: 10,cldnstep: 100, cldndelay: 1200},
   olnstatusrate: {timeoutid: 0, delay: 5000},
   beatrate: {timeoutid: 0, delay: 1800},
   cnfrate: {timeoutid: 0, delay: 1200},

@@ -61,6 +61,22 @@ html, body {
   overflow: hidden;
 }
 
+#logid {
+  width: 400px;
+  height: 300px;
+  position: absolute;
+  top: 60px;
+  left: 400px;
+  z-index: 1000;
+}
+
+#clearlog {
+  position: absolute;
+  top: 365px;
+  left: 400px;
+  z-index: 1000;
+}
+
 #chatpanelID {
   display: flex;
   height: calc(100vh - var(--header-height));

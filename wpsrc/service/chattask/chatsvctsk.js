@@ -1,3 +1,5 @@
+const accessdelay = 200;
+
 let srvcetool;
 let cbxcntrl;
 let token;
@@ -16,8 +18,25 @@ let serviceTool;
 let chbxcontrol;
 let TOKEN;
 let refreshtoken;
-let serverchatcmnc;
-let serverstreamcmnc;
+
+// chat server communicate
+let getchatboxMember;
+let getChatboxlist;
+let gettouchMe;
+let settouchMe;
+let istillonline;
+let sendMessagetochatbox;
+let setmessageReaded;
+let getMakerelateNotify;
+let getInvitechatboxNotify;
+let getchatNotify;
+let getChatboxUnreadmessage;
+
+// strean server communicate
+let userstilllivestream;
+let sgetChatboxUnreadmessage;
+
+let openlist;
 
 export const init = function (myapp, chttk, srvcetool, cbxcntrl, token, svrCom) {
 
@@ -36,13 +55,27 @@ export const init = function (myapp, chttk, srvcetool, cbxcntrl, token, svrCom) 
   chbxcontrol = cbxcntrl.chbxcontrol;
   TOKEN = token.TOKEN;
   refreshtoken = token.refreshtoken;
-  serverchatcmnc = svrCom.serverchatcmnc;
-  serverstreamcmnc = svrCom.serverstreamcmnc;
+
+  getchatboxMember = svrCom.serverchatcmnc.getchatboxMember;
+  getChatboxlist = svrCom.serverchatcmnc.getChatboxlist;
+  gettouchMe = svrCom.serverchatcmnc.gettouchMe;
+  settouchMe = svrCom.serverchatcmnc.settouchMe;
+  istillonline = svrCom.serverchatcmnc.istillonline;
+  sendMessagetochatbox = svrCom.serverchatcmnc.sendMessagetochatbox;
+  setmessageReaded = svrCom.serverchatcmnc.setmessageReaded;
+  getMakerelateNotify = svrCom.serverchatcmnc.getMakerelateNotify;
+  getInvitechatboxNotify = svrCom.serverchatcmnc.getInvitechatboxNotify;
+  getchatNotify = svrCom.serverchatcmnc.getchatNotify;
+  getChatboxUnreadmessage = svrCom.serverchatcmnc.getChatboxUnreadmessage;
+
+  userstilllivestream = svrCom.serverstreamcmnc.userstilllivestream;
+  sgetChatboxUnreadmessage = svrCom.serverstreamcmnc.getChatboxUnreadmessage;
+
+  openlist = ACTIVECHATBOX.selector.openlist;
 }
 
 export const chatsvctsk = {
   userstilllivestream: function () {
-    const userstilllivestream = serverstreamcmnc.userstilllivestream;
     ACBchatboxStackdata.forEach(chtbxstkitem => {
       userstilllivestream(chtbxstkitem.chatboxid);
     });
@@ -50,13 +83,15 @@ export const chatsvctsk = {
 
   // chat list
   updatechatboxlistdata: async function() {
-    const chatboxlist = await serverchatcmnc.getChatboxlist();
-    const getchatboxMember = serverchatcmnc.getchatboxMember;
+    const chatboxlist = await getChatboxlist();
     if (!chatboxlist) return;
-    APPDATA.chatboxlist = chatboxlist
-    APPDATA.chatboxlist.forEach (async item => {
-      item.members = await getchatboxMember(item.chatboxid);
-    });
+    delete APPDATA.chatboxlist;
+    APPDATA.chatboxlist = chatboxlist;
+    for (var item of chatboxlist) {
+      await sleep(accessdelay);
+      const members = await getchatboxMember(item.chatboxid);
+      if (members) {delete item.members; item.members = members};
+    }
   },
 
   // chat box
@@ -66,6 +101,7 @@ export const chatsvctsk = {
       chatboxlist.forEach(chatboxlistitem => {
         if(chtbxstkitem.chatboxid!=chatboxlistitem.chatboxid) return;
         if (!chatboxlistitem.members) return;
+        delete chtbxstkitem.members;
         chtbxstkitem.members = chatboxlistitem.members;
       });
     });
@@ -73,14 +109,13 @@ export const chatsvctsk = {
 
   showchatbox: function() {
     if(!ACTIVECHATBOX.selector.isreadytoshow())return ;
-    const openlist = ACTIVECHATBOX.selector.openlist;
     openlist.forEach(item => {
       if (ACBchatboxStackdata.some(chtbxstkitem => { if(chtbxstkitem.chatboxid == item)return true;})) {// is opened
-        ACTIVECHATBOX.selector.openlist.remove(item);
+        openlist.remove(item);
         return;
       }
+      openlist.remove(item);
       chbxcontrol.showChatbox(item);
-      ACTIVECHATBOX.selector.openlist.remove(item);
     });
   },
 
@@ -103,14 +138,15 @@ export const chatsvctsk = {
 
   //service
   gettouch: async function () {
-    const touch = await serverchatcmnc.gettouchMe();
+    const touch = await gettouchMe();
+    delete TOUCH.touchme;
     TOUCH.touchme = ((touch)?touch.touchme:false);//
     if(!TOUCH.touchme) {UPDATER.ISWAKEDUP = false;}
   },
 
   feedback: async function (chtSrvce) {
     if(!TOUCH.touchme||TOUCH.VOTEUPDATE.updaterTotalVote < 3) return;
-    await serverchatcmnc.settouchMe(/*false*/);
+    await settouchMe(/*false*/);
     console.log("feedback", UPDATER.ISWAKEDUP);
   },
 
@@ -131,37 +167,38 @@ export const chatsvctsk = {
 
   // online
   userstillonline: async function () {
-    await serverchatcmnc.istillonline();
+    await istillonline();
   },
 
-  updtchtbxlistactivestt: function () {// update chat box list active
+  updtchtbxlistactivestt: async function () {// update chat box list active
     const chatlist = [];
     const chatboxlist = APPDATA.chatboxlist;
     const chatboxactivestt = chattask.chatboxactivestt;
     for (var chatbox of chatboxlist) { chatlist.push(chatbox.chatboxid); }
-    chatboxlist.forEach(chatbox => {
+    for (var chatbox of chatboxlist) {
+      await sleep(accessdelay);
       chatboxactivestt(chatbox, chatlist);
-    });
+    }
   },
 
   updtchtbxlistonlinestt: function () {// update chat box list online
     const chatboxlist = APPDATA.chatboxlist;
     const chatlistonlinestt = chattask.chatlistonlinestt;
-    chatboxlist.forEach(chatbox => {
+    for (var chatbox of chatboxlist) {
       chatlistonlinestt(chatbox);
-    });
+    }
   },
 
   updtrecentchtbxonlinestt: async function () {// update recent chat box list online
     const chatboxlist = APPDATA.chatboxlist;
     const recentonlinestt = chattask.recentonlinestt;
     const setuprecentchatboxOnline = recentchtbx => {
-      chatboxlist.forEach(chatboxlistitem => {
-        if(recentchtbx.chatboxid==chatboxlistitem.chatboxid) {
-          recentonlinestt(recentchtbx, chatboxlistitem);
-          return true;
+      for (var chatbox of chatboxlist) {
+        if(recentchtbx.chatboxid==chatbox.chatboxid) {
+          recentonlinestt(recentchtbx, chatbox);
+          continue;
         }
-      });
+      }
     }
     ACBrecentchatboxdata.some(setuprecentchatboxOnline);
   },
@@ -189,6 +226,9 @@ export const chatsvctsk = {
       receive_chatdata_cache.forEach(item => {
         if (!item.success) return;
         receive_chatdata_cache.remove(item);
+        for (const prop of item.getOwnPropertyNames(obj)) {
+          delete obj[prop];
+        }
       });
     });
   },
@@ -200,6 +240,9 @@ export const chatsvctsk = {
       receive_streamdata_cache.forEach(item => {
         if (!item.success) return;
         receive_streamdata_cache.remove(item);
+        for (const prop of item.getOwnPropertyNames(obj)) {
+          delete obj[prop];
+        }
       });
     });
   },
@@ -211,6 +254,9 @@ export const chatsvctsk = {
       sending_chatdata_cache.forEach(item => {
         if (!item.success||!item.updateinbrowser) return;
         sending_chatdata_cache.remove(item);
+        for (const prop of item.getOwnPropertyNames(obj)) {
+          delete obj[prop];
+        }
       });
     });
   },
@@ -227,7 +273,6 @@ export const chatsvctsk = {
   },
 
   sendmessage: async function () {
-    const sender = serverchatcmnc.sendMessagetochatbox;
 
     for (var chtbxstkitem of ACBchatboxStackdata) {
       if(chtbxstkitem.conversation==null) continue;
@@ -236,8 +281,8 @@ export const chatsvctsk = {
       for (var item of sending_chatdata_cache) {
         if(item.sendingcount>=1) continue;
         item.sendingcount += 1;
-        await sleep(50);
-        await sender(conversationid, item).
+        await sleep(80);
+        await sendMessagetochatbox(conversationid, item).
         then((rs)=>{
           if(rs&&rs.unhideUsermindid) {
             item.resID = rs.unhideUsermindid;
@@ -265,11 +310,11 @@ export const chatsvctsk = {
 
   setmessagereaded: function () {
     //set message is readed
-    const setmessageReaded = serverchatcmnc.setmessageReaded;
     const newDate = getDateString(new Date ());
     const setcachedataisReaded = async (chtbxstkitem, item) => {
       if (!item.viewinbrowser||item.success||item.sended||item.datetimeread != null ||item.unhideuserid==USERDATA.ID) return;
       item.sendingcount += 1;
+      await sleep(accessdelay);
       const rs = await setmessageReaded(item.unhideUsermindid, newDate);// set item.success = res;
       if(rs[0]>=1) {
         item.success = true;
@@ -355,20 +400,23 @@ export const chatsvctsk = {
 
   // notice
   getmakerelateevent:async function() {
-    const makerelateRequest = await serverchatcmnc.getMakerelateNotify();
+    const makerelateRequest = await getMakerelateNotify();
     if (!makerelateRequest) return;
+    delete APPNOTICE.makerelateRequest;
     APPNOTICE.makerelateRequest = makerelateRequest;
   },
 
   getinvitechatboxevent:async function() {
-    const invitechatboxNotify = await serverchatcmnc.getInvitechatboxNotify();
+    const invitechatboxNotify = await getInvitechatboxNotify();
     if (!invitechatboxNotify) return;
+    delete APPNOTICE.invitechatboxNotify;
     APPNOTICE.invitechatboxNotify = invitechatboxNotify;
   },
 
   getchatnotievent:async function() {
-    const chatNotify = await serverchatcmnc.getchatNotify();
+    const chatNotify = await getchatNotify();
     if (!chatNotify) return;
+    delete APPNOTICE.chatboxUnreadmessage;
     APPNOTICE.chatboxUnreadmessage = chatNotify;// save to query
   },
 
@@ -503,7 +551,7 @@ const chatsvctsktool = {
     if(!chtbxstkitem.conversation) return;
     if(!chtbxstkitem.initcomplete) return;
 
-    const chatboxUnreadmessage = await serverchatcmnc.getChatboxUnreadmessage (chtbxstkitem.conversation.conversationid);// check match id and load
+    const chatboxUnreadmessage = await getChatboxUnreadmessage(chtbxstkitem.conversation.conversationid);// check match id and load
     if (!chatboxUnreadmessage) return;
     const receive_chatdata_cache = chtbxstkitem.receive_chatdata_cache;
     const setupReceiveChatdataCache = (convMessageitem, i) => {
@@ -535,7 +583,7 @@ const chatsvctsktool = {
   load_streamdata_tocache:async function (chtbxstkitem) {
     if(!chtbxstkitem.conversation) return;
     if(!chtbxstkitem.initcomplete) return;
-    const chatboxStreamdatareceiv = await serverstreamcmnc.getChatboxUnreadmessage(chtbxstkitem.conversation.conversationid);
+    const chatboxStreamdatareceiv = await sgetChatboxUnreadmessage(chtbxstkitem.conversation.conversationid);
     const receive_streamdata_cache = chtbxstkitem.receive_streamdata_cache;
 
     const setupReceiveMultimediafile = (convMmediafileitem, i) => {

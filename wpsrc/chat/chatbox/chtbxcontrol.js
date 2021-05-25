@@ -42,14 +42,15 @@ export const chbxcontrol = {
   },
 
   chtbxdestroyer: async function (idx) {
-    const item = ACBchatboxStackdata[idx];
-    item.chatbox.classList.remove("chatboxmaximize");
-    item.chatbox.setAttribute('style', 'animation: fade 0.5s ease forwards !important');
+    const chtbxstkitem = ACBchatboxStackdata[idx];
+    chtbxstkitem.chatbox.classList.remove("chatboxmaximize");
+    chtbxstkitem.chatbox.setAttribute('style', 'animation: fade 0.5s ease forwards !important');
     new Promise(function(resolve, reject) {
       setTimeout(()=>{
-        serverstreamcmnc.leaveoutchatbox(item.chatboxid);
-        item.chatbox.remove();
-        ACBchatboxStackdata.remove(item);
+        serverstreamcmnc.leaveoutchatbox(chtbxstkitem.chatboxid);
+        chtbxstkitem.chatbox.remove();
+        delete chtbxstkitem.chatbox;
+        ACBchatboxStackdata.remove(chtbxstkitem);
         chbxcontrol.hightlight();
         resolve();
       }, 800);

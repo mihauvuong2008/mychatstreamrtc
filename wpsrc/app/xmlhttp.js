@@ -1,8 +1,8 @@
 module.exports = (TOKEN, xmlhttp) => {
 
   xmlhttp.Get_XMLHttpRequest = function (path, sendData) {
-
-    // const d = new Date();
+  const log = document.getElementById("logid");
+    const d = new Date();
 
     return new Promise((resolve, reject) => {
 
@@ -16,15 +16,20 @@ module.exports = (TOKEN, xmlhttp) => {
       xhr.addEventListener('load', () => {
         const response = xhr.response;
         if (response && response.error) {
-          console.log("response: ", response);
           reject(response && response.error ? response.error.message : genericErrorText);
         }
-        // console.log(new Date() - d);
+        const dd = new Date() - d;
+
+        if (log) {
+          log.value += "[" +dd + "] " + path + '\r\n';
+          log.scrollTop = log.scrollHeight;
+        }
+
         resolve(response);
       });
 
       xhr.ontimeout = function (e) {
-        console.log("timeout");
+        console.log("get timeout");
         // alert("timeout");
         resolve(null);
       };
@@ -57,7 +62,7 @@ module.exports = (TOKEN, xmlhttp) => {
       });
 
       xhr.ontimeout = function (e) {
-        console.log("timeout");
+        console.log("post timeout");
         resolve(null);
       };
 

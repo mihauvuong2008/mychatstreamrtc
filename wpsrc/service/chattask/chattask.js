@@ -1,8 +1,6 @@
 const dmt = require('../../app/domtl');
 const chtlst = require('../../chat/chatapp');
 
-let serverstreamcmnc;
-let serverchatcmnc;
 let chbxcontrol;
 let chtbxtool;
 let serviceTool;
@@ -10,11 +8,17 @@ let USERDATA;
 let CHATROOMTYPE;
 let APPDATA;
 let ACBchatboxStackdata
+let sleep;
+
+let createConversation;
+let getSeenlist;
+let getLastConversation;
+let getconversationData;
+
+let getactiveChatboxlist;
 
 export const init = function (myapp, srvcetool, cbtool, cbxcntrl, svrCom) {
 
-  serverstreamcmnc = svrCom.serverstreamcmnc;
-  serverchatcmnc = svrCom.serverchatcmnc;
   chbxcontrol = cbxcntrl.chbxcontrol;
   chtbxtool = cbtool.chtbxtool;
   serviceTool = srvcetool.serviceTool;
@@ -22,12 +26,20 @@ export const init = function (myapp, srvcetool, cbtool, cbxcntrl, svrCom) {
   CHATROOMTYPE = myapp.CHATROOMTYPE;
   APPDATA = myapp.APP.DATA;
   ACBchatboxStackdata = myapp.ACTIVECHATBOX.chatboxStack.data;
+  sleep = myapp.sleep;
+
+  createConversation = svrCom.serverchatcmnc.createConversation;
+  getSeenlist = svrCom.serverchatcmnc.getSeenlist;
+  getLastConversation = svrCom.serverchatcmnc.getLastConversation;
+  getconversationData = svrCom.serverchatcmnc.getconversationData;
+
+  getactiveChatboxlist = svrCom.serverstreamcmnc.getactiveChatboxlist;
 }
 
 export const chattask = {
 
   chatboxactivestt: function (chatbox, chatlist) {
-    serverstreamcmnc.getactiveChatboxlist(chatlist)
+    getactiveChatboxlist(chatlist)
     .then(activeChatboxlist => {
       const setupActive = item_ => {if (item_ == chatbox.chatboxid) return true;}
       const active = (activeChatboxlist||[]).some(setupActive);
@@ -66,13 +78,13 @@ export const chattask = {
   // update chat
   cleanchatboxstck: function (chtbxstkitem) {
     chtbxstkitem.chatbox.remove();
+    delete chtbxstkitem.chatbox;
     ACBchatboxStackdata.remove(chtbxstkitem);
   },
 
   refreshchatboxinfo: function (chtbxstkitem) {
     // if (!chtbxstkitem.members) return;
     try {
-
       chtbxstkitem.members.forEach(mem => {
         switch (true) {
           case (mem.userid != USERDATA.ID): return;
@@ -155,7 +167,7 @@ export const chattask = {
     const memberList = document.getElementById("memberID"+chtbxstkitem.chatboxid);
     switch (true) {
       case (!memberList): return;
-      case (!chtbxstkitem.members): return;//async still not update yet
+      case (!chtbxstkitem.members): return; //async still not update yet
     }
     let USER_ISKEY = chtbxstkitem.members.some(item => {if(item.userid == USERDATA.ID) {return item.chatboxuserkey;}});
     chtbxstkitem.members.forEach(mem => {
@@ -280,16 +292,17 @@ export const chattask = {
   },
 
   makenewConversation: async function (chtbxstkitem) {
-    chtbxstkitem.conversation = (await serverchatcmnc.createConversation(chtbxstkitem.chatboxid));
+    chtbxstkitem.conversation = (await createConversation(chtbxstkitem.chatboxid));
     console.log("new conversation");
   },
 
   clearOldConversation: async function (chtbxstkitem) {
     if(chtbxstkitem.conversation)
     if (serviceTool.is_liveconversation(chtbxstkitem.conversation)) return;
-    const conversation = await(serverchatcmnc.getLastConversation(chtbxstkitem.chatboxid,"undefined"));
+    const conversation = await getLastConversation(chtbxstkitem.chatboxid,"undefined");
     if (!conversation) return;
     if (serviceTool.is_liveconversation(conversation)) {
+      delete chtbxstkitem.conversation;
       chtbxstkitem.conversation = conversation;// update conversation
       return;
     }
@@ -364,16 +377,16 @@ export const chattask = {
     const minY = messagebox.getBoundingClientRect().y;
     const maxY = minY + messagebox.getBoundingClientRect().height;
     let unhideUsermindid, seenlistitem, seenlist;
-    const getSeenlist = serverchatcmnc.getSeenlist;
+    const messagelist = document.querySelectorAll("[class=messageitem][chatboxid='"+chtbxstkitem.chatboxid+"']");
     try {
-      for (var message of document.querySelectorAll("[class=userchatboxmessagae]")) {
-        const pos = message.getBoundingClientRect().y;
+      for (var messageitem of messagelist) {
+        const pos = messageitem.getBoundingClientRect().y;
         switch (true) {
-          case (pos>maxY||pos<minY):continue;
-          case !(unhideUsermindid = message.parentNode.getAttribute("unhideusermindid")):continue;
-          case !(seenlistitem = document.getElementById("seenlistitemID" + unhideUsermindid)):continue;
-          case !(seenlist = await getSeenlist(unhideUsermindid)):continue;
-          case (seenlist.length == members.length):continue;
+          case (pos>maxY||pos<minY): continue;
+          case !(unhideUsermindid = messageitem.getAttribute("unhideusermindid")): continue;
+          case !(seenlistitem = document.getElementById("seenlistitemID" + unhideUsermindid)): continue;
+          case !(seenlist = await getSeenlist(unhideUsermindid)): {await sleep(200); continue};
+          case (seenlist.length == members.length): continue;
         }
         (seenlist||[]).forEach(item => {
           const seenitem = document.getElementById("seenitemID"+ unhideUsermindid +"-"+item.userid);
@@ -534,11 +547,12 @@ export const chattask = {
     const olderMsg = messagebox.getElementsByClassName('messageitem')[0]; // get curr oldest message in chatbox
     if (olderMsg) {
       const unhideUsermindid = olderMsg.getAttribute("unhideUsermindid");
-      conversationData = await serverchatcmnc.getconversationData(firstconverstationid, unhideUsermindid);
+      conversationData = await getconversationData(firstconverstationid, unhideUsermindid);
     }
+    if (!conversationData) return;
     if(conversationData.length==0||!olderMsg) {// add new conversation to loadmoremsg
       // get older conversation
-      const conversation = await serverchatcmnc.getLastConversation(chatboxid, converstationEndat);
+      const conversation = await getLastConversation(chatboxid, converstationEndat);
       if (!conversation) {
         chtbxstkitem.NOMORE = true;
         const nomore = dmt.domtool.creatediv("nomore");
@@ -558,7 +572,7 @@ export const chattask = {
       messagebox.prepend(converstationinfo);// add new conversation to loadmoremsg
 
       firstconverstationinfo = converstationinfo;
-      conversationData = await (serverchatcmnc.getconversationData(conversation.conversationid));
+      conversationData = await getconversationData(conversation.conversationid);
     }
     if(conversationData[0]) { // load data conversation
       chtbxstkitem.LOADMOREMESSAGEID /*for sync*/ = conversationData[0].unhideUsermindid;

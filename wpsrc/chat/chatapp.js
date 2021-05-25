@@ -72,4 +72,24 @@ function intitChatboxlist(){
   const chatlist = document.getElementById("chatlistID");
   chatlist.innerHTML = "";
   // service will be init last part
+
+  // const log = document.createElement("textarea");
+  // log.className = "log"
+  // log.id = "logid";
+  // document.body.prepend(log);
+  //
+  // const clearlog = document.createElement("input");
+  // clearlog.type = "button"
+  // clearlog.value = "clearlog";
+  // clearlog.onclick = function () {
+  //   const log = document.getElementById("logid");
+  //   log.value = "";
+  // }
+  // clearlog.className = "clearlog";
+  // clearlog.id = "clearlog";
+  // document.body.prepend(clearlog);
+  //
+  // setInterval( async ()=>{
+  //   log.value = "";
+  // }, 15000);
 }
