@@ -61,11 +61,11 @@ class chatService {
     this.onlinestatus();
     if (wakeup) await sleep(200);
     this.newevent();
-    if (wakeup) await sleep(200);
+    if (wakeup) await sleep(400);
     this.servercache();
-    if (wakeup) await sleep(200);
+    if (wakeup) await sleep(400);
     this.brownsercache();
-    if (wakeup) await sleep(200);
+    if (wakeup) await sleep(400);
   }
 
   useraction(){
