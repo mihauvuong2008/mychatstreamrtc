@@ -12,40 +12,51 @@ export const init = function (myapp) {
     if(!(catched||chbxcatched||teamviewcatched))
     switch ((document.elementFromPoint(currPos.x, currPos.y)||{className: false}).className) {
       case "puple":
-      catched = true;
-      box = document.getElementById("pupleboxID");
-      boxsizeX = box.clientWidth;
-      boxsizeY = box.clientHeight;
-      boxmousePointX = 25;// currPos.x - box.getBoundingClientRect().x;
-      boxmousePointY = 25;//currPos.y - box.getBoundingClientRect().y;
-      endX = document.documentElement.clientWidth - boxsizeX;
-      endY = document.documentElement.clientHeight -boxsizeY;
+      new Promise(function(resolve, reject) {
+        box = document.getElementById("pupleboxID");
+        boxsizeX = box.clientWidth;
+        boxsizeY = box.clientHeight;
+        boxmousePointX = 25;// currPos.x - box.getBoundingClientRect().x;
+        boxmousePointY = 25;//currPos.y - box.getBoundingClientRect().y;
+        endX = document.documentElement.clientWidth - boxsizeX;
+        endY = document.documentElement.clientHeight -boxsizeY;
+        resolve({endX, endY});
+      }).then(()=>{
+        catched = true;
+      });
       break;
       case "titlechatbox":
-      chbxcatched = true;
-      id = document.elementFromPoint(currPos.x, currPos.y).getAttribute("chatboxid");
-      box = document.getElementById("chatboxID" + id);
-      boxsizeX = box.offsetWidth;
-      boxsizeY = box.offsetHeight;
-      boxmousePointX = currPos.x - box.getBoundingClientRect().x;
-      boxmousePointY = currPos.y - box.getBoundingClientRect().y + 55 /*chatpanel margin*/;
-      endX = document.documentElement.clientWidth - boxsizeX;
-      endY = document.documentElement.clientHeight - boxsizeY - 55 /*chatpanel margin*/;
+      new Promise(function(resolve, reject) {
+        id = document.elementFromPoint(currPos.x, currPos.y).getAttribute("chatboxid");
+        box = document.getElementById("chatboxID" + id);
+        boxsizeX = box.offsetWidth;
+        boxsizeY = box.offsetHeight+ 55; /*chatpanel margin*/
+        boxmousePointX = currPos.x - box.getBoundingClientRect().x;
+        endX = document.documentElement.clientWidth - boxsizeX;
+        endY = document.documentElement.clientHeight - boxsizeY
+        boxmousePointY = currPos.y - box.getBoundingClientRect().y + 55 /*chatpanel margin*/;
+        resolve({endX, endY});
+      }).then(()=>{
+        chbxcatched = true;
+      });
       break;
       case "teamviewcontrol":
-      teamviewcatched = true;
-      const teamviewcontrol = document.elementFromPoint(currPos.x, currPos.y);
+      new Promise(function(resolve, reject) {
+        const teamviewcontrol = document.elementFromPoint(currPos.x, currPos.y);
+        const chatboxid = teamviewcontrol.getAttribute("chatboxid");
+        const userid = teamviewcontrol.getAttribute("userid");
 
-      const chatboxid = teamviewcontrol.getAttribute("chatboxid");
-      const userid = teamviewcontrol.getAttribute("userid");
-
-      box = document.getElementById("teamviewwindowID" + chatboxid + "-" + userid);
-      boxsizeX = box.offsetWidth;
-      boxsizeY = box.offsetHeight;
-      boxmousePointX = currPos.x - teamviewcontrol.getBoundingClientRect().x;
-      boxmousePointY = currPos.y - teamviewcontrol.getBoundingClientRect().y;
-      endX = document.documentElement.clientWidth - boxsizeX;
-      endY = document.documentElement.clientHeight - boxsizeY;
+        box = document.getElementById("teamviewwindowID" + chatboxid + "-" + userid);
+        boxsizeX = box.offsetWidth;
+        boxsizeY = box.offsetHeight;
+        boxmousePointX = currPos.x - teamviewcontrol.getBoundingClientRect().x;
+        boxmousePointY = currPos.y - teamviewcontrol.getBoundingClientRect().y;
+        endX = document.documentElement.clientWidth - boxsizeX;
+        endY = document.documentElement.clientHeight - boxsizeY;
+        resolve({endX, endY});
+      }).then(() => {
+        teamviewcatched = true;
+      });
       break;
 
     }

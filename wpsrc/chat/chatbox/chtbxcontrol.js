@@ -7,13 +7,13 @@ let teamviewtool;
 let serverstreamcmnc;
 let serverchatcmnc;
 
-export const init = function (myapp, _chatBox, teamview, svrCom) {
+export const init = function (myapp, _chatBox, tmvwtool, svrCom) {
   executeAsync = myapp.executeAsync;
   CHATBOXSTATE = myapp.CHATBOXSTATE;
   USERDATA = myapp.USERDATA;
   ACBchatboxStackdata = myapp.ACTIVECHATBOX.chatboxStack.data;
   chatBox = _chatBox;
-  teamviewtool = teamview.teamviewtool;
+  teamviewtool = tmvwtool.teamviewtool;
   serverstreamcmnc = svrCom.serverstreamcmnc;
   serverchatcmnc  = svrCom.serverchatcmnc;
 }
@@ -115,6 +115,17 @@ export const chbxcontrol = {
       }
     }
     ACBchatboxStackdata.some(setupChatboxsate);
+  },
+
+  chatboxwindow: function () {
+    const chatboxid = this.getAttribute("chatboxid");
+    const chatbox = document.getElementById( "chatboxID" + chatboxid);
+    if (chatbox.classList.contains("chatboxwindow")) {
+      chatbox.classList.remove("chatboxwindow");
+      return;
+    };
+    chatbox.className = "chatbox";
+    chatbox.classList.add("chatboxwindow");
   },
 
   showinfomessage: function(){

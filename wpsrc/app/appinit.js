@@ -15,8 +15,8 @@ const chattask = require('../service/chattask/chattask');
 const service = require('../service/service');
 const tmvwtsk = require('../service/teamviewtask/teamvwtask');
 const contact = require('../contact/contact');
-const scrncapture = require('../teamviewer/screencapture');
 const teamview = require('../teamviewer/teamview');
+const teamviewtool = require('../teamviewer/teamviewtool');
 const tvwcontrol = require('../teamviewer/tvwcontrol');
 
 let svrCom = {};// server communicate
@@ -34,7 +34,7 @@ window.init = function (userid, username){
   chatapp.init(myapp, service);
   chtbxtool.init(myapp, chatBox, cbxcntrl, contact, srvcetool, service, token, svrCom);
   chatBox.init(myapp, chtbxtool, cbxcntrl);
-  cbxcntrl.init(myapp, chatBox, teamview, svrCom);
+  cbxcntrl.init(myapp, chatBox, teamviewtool, svrCom);
   rcntcontact.init(myapp, cbxcntrl, service, svrCom);
   tmvwtsk.init(myapp, svrCom);
   srvcetool.init(myapp);
@@ -45,6 +45,6 @@ window.init = function (userid, username){
   mainMenu.init(myapp, contact, service, svrCom);
   contact.init(myapp, service, svrCom);
   tvwcontrol.init(myapp, svrCom);
-  scrncapture.init(tvwcontrol);
-  teamview.init(scrncapture);
+  teamview.init(tvwcontrol);
+  teamviewtool.init(teamview);
 }

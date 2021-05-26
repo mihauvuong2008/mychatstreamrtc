@@ -1,4 +1,5 @@
 const startScreenshare = require('./openscreenshare');
+const videoplayer = require('./playvideo');
 const Peer = require('simple-peer');
 
 let serverstreamcmnc;
@@ -12,6 +13,7 @@ export const init = function (myapp, svrCom) {
 }
 
 export const twcontrol = {
+  
   teamviewscreenonplay: function () {
     const chatboxid = this.getAttribute('chatboxid');
     const userid = this.getAttribute('userid');
@@ -21,7 +23,6 @@ export const twcontrol = {
     const screenheight = parseInt(this.offsetWidth * s,10);
     const controlbarheight = teamviewcontrol.offsetHeight;
     const teamviewwindow = document.getElementById("teamviewwindowID"+chatboxid+"-"+userid);
-    console.log("aasd:", controlbarheight+screenheight);
     teamviewwindow.style.height = (controlbarheight+screenheight) + "px";
   },
 
@@ -31,7 +32,7 @@ export const twcontrol = {
     twcontrol.stopteamview = false;
     await startScreenshare()
     .then(stream => {
-      teamviewscreen.srcObject = stream;
+      videoplayer(teamviewscreen, stream);
       peer = new Peer({ initiator: true, stream: stream });
       peer.on('signal', async data => {
         console.log("chatboxid, userid:", chatboxid, userid);
@@ -88,7 +89,7 @@ export const twcontrol = {
       });
 
       peer.on('stream', stream => {
-        teamviewscreen.srcObject = stream;
+        videoplayer(teamviewscreen, stream);
       });
 
       peer.on('connect', () => {
@@ -120,7 +121,7 @@ export const twcontrol = {
     const teamviewscreenid = "teamviewscreenID"+chatboxid+"-"+userid;
     const teamviewwindow = document.getElementById(teamviewwindowid);
     const teamviewscreen = document.getElementById(teamviewscreenid);
-    if (teamviewscreen.srcObject){
+    if (teamviewscreen.srcObject) {
       teamviewscreen.srcObject.getTracks().forEach(track => track.stop());
     }
     teamviewscreen.srcObject = null;

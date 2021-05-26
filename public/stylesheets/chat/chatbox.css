@@ -16,12 +16,13 @@
   align-items: stretch;
   flex-direction: column-reverse;
   flex-wrap: nowrap;
+  background: #ffffff;
   border: 1px solid #E1E1E1;
   margin: 2px;
   overflow: hidden;
   box-sizing: border-box;
   border-radius: 13px;
-  transition: all .2s ease-in-out;
+  /* transition: all .2s ease-in-out; */
 }
 
 .chatboxmaximize {
@@ -34,10 +35,12 @@
 .chatboxbean .chatboxwindow {
   position: absolute;
   width: 400px;
+  max-width: 50vw !important;
   top: 25px;
-  -webkit-box-shadow: 1px 2px 2px #D8D8D8;
-  box-shadow: 1px 2px 2px #D8D8D8;
+  -webkit-box-shadow: 1px 2px 2px #d8d8d8;
+  box-shadow: 1px 2px 21px #efefef;
   resize: both;
+  z-index: 1;
 }
 .chatboxbean .chatboxminimize {
   width: 190px;
@@ -591,9 +594,11 @@
   align-items: center;
   padding: 2px;
 }
+
 .chatboxbean .memberitem .removemember:hover {
   color: rgba(244, 59, 59, 1.00);
 }
+
 .chatboxbean .memberitem .memberinvite {
   background-color: #9fd2af;
   border-radius: 20px;
@@ -602,10 +607,12 @@
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
 }
+
 .chatboxbean .memberitem .memberinvite:hover {
   background-color: #6fc189;
   transition: background-color 0.2s ease-in-out;
 }
+
 .chatboxbean .memberitem .dissolution {
   background-color: #d2b39f;
   border-radius: 20px;
@@ -613,10 +620,12 @@
   color: rgba(255, 255, 255, 1.00);
   transition: background-color 0.2s ease-in-out;
 }
+
 .chatboxbean .memberitem .dissolution:hover {
   background-color: #cf2727;
   transition: background-color 0.2s ease-in-out;
 }
+
 .chatboxbean .memberitem .leave {
   background-color: #d4d4d4;
   border-radius: 20px;
@@ -624,10 +633,12 @@
   color: rgba(255, 255, 255, 1.00);
   transition: background-color 0.2s ease-in-out;
 }
+
 .chatboxbean .memberitem .leave:hover {
   background-color: #969696;
   transition: background-color 0.2s ease-in-out;
 }
+
 .chatboxbean .memberitem .livestream {
   background-color: #9fb4d2;
   border-radius: 20px;
@@ -635,6 +646,7 @@
   color: rgba(255, 255, 255, 1.00);
   transition: background-color 0.2s ease-in-out;
 }
+
 .chatboxbean .memberitem .livestream:hover {
   background-color: #5d8ed3;
   transition: background-color 0.2s ease-in-out;
@@ -653,6 +665,7 @@
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently*/
 }
+
 .chatboxbean .titlechatbox .chatboxname {
   width: 60%;
   max-width: 60%;
@@ -665,15 +678,18 @@
   overflow: hidden;
   font-size: 17px;
 }
+
 .chatboxbean .titlechatbox .chatboxname[contenteditable="true"] {
   outline: 1px dashed transparent;
   color: #0087bb;
 }
+
 .chatboxbean .titlechatbox .chatboxname[contenteditable="true"]:empty:before {
   content: attr(placeholder);
   pointer-events: none;
   display: block; /* For Firefox */
 }
+
 .chatboxbean .titlechatbox .controlchatbox {
   min-width: 80px;
   width: 40%;
@@ -684,18 +700,21 @@
   order: 2;
   overflow: auto;
 }
+
 .chatboxbean .titlechatbox .controlchatbox .chatbox_minimize {
   border-bottom: 1px solid #8c8c8c;
   min-height: 9px;
   width: 9px;
   min-width: 9px;
   height: 9px;
-  margin: 4px 5px 8px 4px;
+  margin: 4px 7px 8px 4px;
   cursor: pointer;
 }
+
 .chatboxbean .titlechatbox .controlchatbox .chatbox_minimize:hover {
   border-bottom: 1px solid #E90003;
 }
+
 .chatboxbean .titlechatbox .controlchatbox .chatbox_maximize {
   max-width: 9px;
   min-width: 9px;
@@ -706,9 +725,26 @@
   border-collapse: separate;
   cursor: pointer;
 }
+
 .chatboxbean .titlechatbox .controlchatbox .chatbox_maximize:hover {
   border: 1px solid #E90003;
 }
+.chatboxbean .titlechatbox .controlchatbox .chatbox_window {
+  max-width: 9px;
+  min-width: 9px;
+  max-height: 9px;
+  min-height: 9px;
+  margin: 4px 7px 4px 5px;
+  border-radius: 10px;
+  border: 1px solid #8c8c8c;
+  border-collapse: separate;
+  cursor: pointer;
+}
+
+.chatboxbean .titlechatbox .controlchatbox .chatbox_window:hover {
+  border: 1px solid #E90003;
+}
+
 .chatboxbean .titlechatbox .controlchatbox .chatbox_close {
   color: #8c8c8c;
   padding: 0px 3px;

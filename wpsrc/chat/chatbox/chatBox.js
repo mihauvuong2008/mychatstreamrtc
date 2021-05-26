@@ -137,11 +137,15 @@ export function addChatbox(chatboxObj){
     const chatbox_maximize = dmt.domtool.creatediv("chatbox_maximize", "chatbox_maximize"+ chatboxObj.chatboxid);
     chatbox_maximize.setAttribute("chatboxid", chatboxObj.chatboxid);
     chatbox_maximize.addEventListener('click', chbxcontrol.chatboxmaximize);
+    const chatbox_window = dmt.domtool.creatediv("chatbox_window", "chatbox_window"+ chatboxObj.chatboxid);
+    chatbox_window.setAttribute("chatboxid", chatboxObj.chatboxid);
+    chatbox_window.addEventListener('click', chbxcontrol.chatboxwindow);
     const chatbox_close = dmt.domtool.creatediv("chatbox_close", "chatbox_closeID"+ chatboxObj.chatboxid);
     chatbox_close.setAttribute("chatboxid", chatboxObj.chatboxid);
     chatbox_close.addEventListener('click',chbxcontrol.closechatbox );
     chatbox_close.innerHTML = "&times;";
     controlchatbox.appendChild(chatbox_minimize);
+    // controlchatbox.appendChild(chatbox_window);
     controlchatbox.appendChild(chatbox_maximize);
     controlchatbox.appendChild(chatbox_close);
     titlechatbox.appendChild(chatboxname);

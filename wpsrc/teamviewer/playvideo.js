@@ -1,4 +1,3 @@
-function openVideo(video, stream) {
+module.exports = (video, stream) => {
   video.srcObject = stream;
 }
-module.exports = openVideo;
