@@ -94,6 +94,7 @@ html, body {
   min-width: var(--chatlist-Width);
   max-width: var(--chatlist-Width);
   padding: 3px;
+  position: relative;
   box-sizing: border-box;
   border: 1px solid #EBEBEB;
   margin: 2px 0 2px 2px;
@@ -106,6 +107,17 @@ html, body {
   /* mozilla: */
   scrollbar-width: none;
   /* box-shadow: 3px 3px 0px 0px rgb(249 249 249); */
+  transition: all .2s linear;
+}
+
+#chatlistID.hide {
+  visibility: hidden;
+  width: 0;
+  min-width: 0;
+  max-width: 0;
+  padding: 0px;
+  margin: 2px 0 2px 0px;
+  transition: all .2s linear;
 }
 
 #chatlistID::-webkit-scrollbar {

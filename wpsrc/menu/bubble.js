@@ -5,6 +5,8 @@ let MOUSESTATE;
 let USERDATA;
 let PUPLESTATE;
 let ACBrecentchatbox;
+let ACBchatboxStack;
+let ACBchatboxStackdata;
 let executeAsync;
 let sleep;
 let serverchatcmnc;
@@ -17,6 +19,8 @@ export const init = function (myapp, service, token, svrCom) {
   USERDATA = myapp.USERDATA;
   PUPLESTATE = myapp.PUPLESTATE;
   ACBrecentchatbox = myapp.ACTIVECHATBOX.recentchatbox;
+  ACBchatboxStack = myapp.ACTIVECHATBOX.chatboxStack;
+  ACBchatboxStackdata = myapp.ACTIVECHATBOX.chatboxStack.data;
   executeAsync = myapp.executeAsync;
   sleep = myapp.sleep;
   serverchatcmnc = svrCom.serverchatcmnc;
@@ -162,16 +166,61 @@ async function initPuplebox(){
     window.location.replace("/logout?token="+TOKEN.ACCESSTOKEN);
   });
 
+  const hidechatlist = document.getElementById("hidechatlistID");
+  hidechatlist.addEventListener('click', function () {
+    if (chatlisttoolbarchecker.checked) {
+      chatlisttoolbarchecker.checked = false;
+      chatlist.classList.add("hide");
+      for (let chtbxstkitem of ACBchatboxStackdata) { chtbxstkitem.dispose = true;}
+      for (let item of document.getElementsByClassName("recentchatbox")) {item.style.visibility = "hidden";}
+      ACBchatboxStack.hide = true;
+    } else {
+      chatlisttoolbarchecker.checked = true;
+      chatlist.classList.remove("hide");
+      ACBchatboxStack.hide = false;
+    }
+  });
+
+  const chatlisttoolbarchecker = document.getElementById("chatlisttoolbarcheckerID");
+  const chatlist = document.getElementById("chatlistID");
+  chatlisttoolbarchecker.checked = true;
+  chatlisttoolbarchecker.addEventListener('change',function() {
+    if (this.checked) {
+      chatlist.classList.remove("hide");
+      ACBchatboxStack.hide = false;
+    } else {
+      chatlist.classList.add("hide");
+      for (let chtbxstkitem of ACBchatboxStackdata) { chtbxstkitem.dispose = true;}
+      for (let item of document.getElementsByClassName("recentchatbox")) {item.style.visibility = "hidden";}
+      ACBchatboxStack.hide = true;
+    }
+  });
+
   const hiderecent = document.getElementById("hiderecentID");
   hiderecent.addEventListener('click', function () {
-    if (ACBrecentchatbox.hide) {
-      console.log("set hidden");
+    // return ;
+    if (recenttoolbarchecker.checked) {
       for (let item of document.getElementsByClassName("recentchatbox")) {item.style.visibility = "hidden";}
-      ACBrecentchatbox.hide=!ACBrecentchatbox.hide;
-      return ;
+      recenttoolbarchecker.checked = false;
+      ACBrecentchatbox.hide = false;
+    } else {
+      for (let item of document.getElementsByClassName("recentchatbox")) { item.style.visibility='visible'; }
+      recenttoolbarchecker.checked = true;
+      ACBrecentchatbox.hide = true;
     }
-    for (let item of document.getElementsByClassName("recentchatbox")) { item.style.visibility='visible'; }
-    ACBrecentchatbox.hide=!ACBrecentchatbox.hide;
+  });
+
+  const recenttoolbarchecker = document.getElementById("recenttoolbarcheckerID");
+  recenttoolbarchecker.checked = true;
+  recenttoolbarchecker.disabled = true;
+  recenttoolbarchecker.addEventListener('change', function() {
+    if (this.checked) {
+      for (let item of document.getElementsByClassName("recentchatbox")) { item.style.visibility='visible'; }
+      ACBrecentchatbox.hide = true;
+    } else {
+      for (let item of document.getElementsByClassName("recentchatbox")) {item.style.visibility = "hidden";}
+      ACBrecentchatbox.hide = false;
+    }
   });
 }
 
@@ -218,7 +267,7 @@ async function close_newgroup(){
 function show_addfriend() {
   if(PUPLESTATE.show_addfriend){
     document.getElementById("addfriendboxID").className = "addfriendbox";
-  }else {
+  } else {
     document.getElementById("addfriendboxID").className = "hideaddfriendbox";
   }
   PUPLESTATE.show_addfriend =!PUPLESTATE.show_addfriend;

@@ -4,6 +4,7 @@ let srvcetool;
 let cbxcntrl;
 let token;
 let ACTIVECHATBOX;
+let ACBchatboxStack;
 let ACBchatboxStackdata;
 let ACBrecentchatboxdata;
 let APPDATA;
@@ -12,6 +13,7 @@ let APPNOTICE;
 let UPDATER;
 let USERDATA;
 let sleep;
+let executeAsync;
 let getDateString;
 let chattask;
 let serviceTool;
@@ -41,6 +43,7 @@ let openlist;
 export const init = function (myapp, chttk, srvcetool, cbxcntrl, token, svrCom) {
 
   ACTIVECHATBOX = myapp.ACTIVECHATBOX;
+  ACBchatboxStack = ACTIVECHATBOX.chatboxStack;
   ACBchatboxStackdata = ACTIVECHATBOX.chatboxStack.data;
   ACBrecentchatboxdata = ACTIVECHATBOX.recentchatbox.data;
   APPDATA = myapp.APP.DATA;
@@ -55,6 +58,7 @@ export const init = function (myapp, chttk, srvcetool, cbxcntrl, token, svrCom) 
   chbxcontrol = cbxcntrl.chbxcontrol;
   TOKEN = token.TOKEN;
   refreshtoken = token.refreshtoken;
+  executeAsync = myapp.executeAsync;
 
   getchatboxMember = svrCom.serverchatcmnc.getchatboxMember;
   getChatboxlist = svrCom.serverchatcmnc.getChatboxlist;
@@ -85,13 +89,36 @@ export const chatsvctsk = {
   updatechatboxlistdata: async function() {
     const chatboxlist = await getChatboxlist();
     if (!chatboxlist) return;
-    for (var item of chatboxlist) {
-      await sleep(accessdelay);
-      const members = await getchatboxMember(item.chatboxid);
-      if (members) {delete item.members; item.members = members};
-    }
-    delete APPDATA.chatboxlist;
-    APPDATA.chatboxlist = chatboxlist;
+
+    executeAsync( async function () {
+      for (var data of chatboxlist) {
+        // new item
+        const exists = APPDATA.chatboxlist.some(item => {if(item.chatboxid==data.chatboxid)return true;});
+        if(!exists){
+          const members = await getchatboxMember(data.chatboxid);
+          APPDATA.chatboxlist.push(data);
+        }
+      }
+
+      for (var data of APPDATA.chatboxlist) {
+        // remove item
+        const exists = chatboxlist.some(item => {if(item.chatboxid==data.chatboxid)return true;});
+        if(!exists){
+          APPDATA.chatboxlist.remove(data);
+        }
+      }
+    }, 50);
+
+    new Promise(async function(resolve, reject) {
+      for (var item of chatboxlist) {
+        await sleep(accessdelay);
+        const members = await getchatboxMember(item.chatboxid);
+        if (members) {delete item.members; item.members = members};
+      }
+    }).then((chatboxlist)=>{
+      delete APPDATA.chatboxlist;
+      APPDATA.chatboxlist = chatboxlist;
+    });
   },
 
   // chat box
@@ -100,7 +127,7 @@ export const chatsvctsk = {
     ACBchatboxStackdata.forEach(chtbxstkitem => {
       chatboxlist.some(item => {
         if(chtbxstkitem.chatboxid!=item.chatboxid) return;
-        if (!item.members) return true;
+        if(!item.members) return true;
         delete chtbxstkitem.members;
         chtbxstkitem.members = item.members;
         return true;
@@ -110,6 +137,7 @@ export const chatsvctsk = {
 
   showchatbox: function() {
     if(!ACTIVECHATBOX.selector.isreadytoshow())return ;
+    if(ACBchatboxStack.hide) return ;
     openlist.forEach(item => {
       if (ACBchatboxStackdata.some(chtbxstkitem => { if(chtbxstkitem.chatboxid == item)return true;})) {// is opened
         openlist.remove(item);
@@ -474,7 +502,7 @@ export const chatsvctsk = {
     const len = chatboxlist.length;
     const appendnewchatlistitem = chattask.appendnewchatlistitem;
     chatboxlist.forEach((chatbox, i) => {
-      appendnewchatlistitem(chatbox, i, chatboxlist.length);
+      appendnewchatlistitem(chatbox, i, len);
     });
   },
 

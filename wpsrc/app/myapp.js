@@ -50,13 +50,13 @@ export const ACTIVECHATBOX = {
     select: function(chatboxid) {
       this.openlist.push(chatboxid);
       for (var i = 0, len = this.openlist.length; i < len; i++) {
-        if (i< ACTIVECHATBOX.chatboxStack.maxWindows) continue;
+        if (i < ACTIVECHATBOX.chatboxStack.maxWindows) continue;
         this.openlist.remove(this.openlist[0]);
       }
     },
   },
 
-  chatboxStack: {maxWindows: 3, data:[]},
+  chatboxStack: {hide: false, maxWindows: 3, data:[]},
   recentchatbox: {hide: true, maxRecent: parseInt(window.innerWidth/150), data:[]}
 };
 

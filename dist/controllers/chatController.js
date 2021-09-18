@@ -411,8 +411,15 @@ const leaveChatbox = (req, res) => __awaiter(this, void 0, void 0, function* () 
             Database.memberOfChatboxs.update({ chatboxuserkey: true }, { where: { chatboxid: req.query.chatboxid, memberid: candidate.memberid } })
                 .then(() => {
                 Database.memberOfChatboxs.destroy({ where: { chatboxid: req.query.chatboxid, memberid: req.user.userid } })
-                    .then((rslt) => {
-                    return res.status(200).json(rslt);
+                    .then(() => {
+                    Database.conversations.findAll({ where: { chatboxid: req.query.chatboxid } })
+                        .then((conversations) => {
+                        trace("conversations:", conversations);
+                        for (var conversation of conversations) {
+                            Database.unreadMessages.destroy({ where: { readerid: req.user.userid, conversationid: conversation.conversationid } });
+                        }
+                        return res.status(200).json({ message: "success." });
+                    });
                 });
             }).catch(function (err) {
                 return res.status(401).json({ message: 'Unauthorized.', });

@@ -37,8 +37,8 @@
 
 #pupleboxID .boxheader .toolbar {
   visibility: visible;
-  max-width: 536px;
-  min-width: 536px;
+  max-width: 630px;
+  min-width: 630px;
   max-height: 20px;
   min-height: 20px;
   overflow: hidden;
@@ -108,6 +108,10 @@
 #pupleboxID .boxheader .toolbar .toolbarbutton:hover {
   color: #5b5e62;
   transition: background,color 0.12s linear;
+}
+
+#pupleboxID .toolbarchecker{
+margin-right: 7px;
 }
 
 #pupleboxID .boxheader .pptbseparate {

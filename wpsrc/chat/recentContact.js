@@ -46,6 +46,7 @@ export function saverecentcontacttocookie(recentchatbox){
 }
 
 export async function drawrecentchatbox(recentdata){
+  if(!ACBrecentchatbox.hide) return;
   const body = document.getElementById("bodyID");
   for (let item of document.getElementsByClassName("recentchatbox")) { item.remove(); }
   let i = 0;

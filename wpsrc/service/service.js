@@ -61,11 +61,10 @@ class chatService {
     this.onlinestatus();
     if (wakeup) await sleep(200);
     this.newevent();
-    if (wakeup) await sleep(400);
+    if (wakeup) await sleep(200);
     this.servercache();
     if (wakeup) await sleep(400);
     this.brownsercache();
-    if (wakeup) await sleep(400);
   }
 
   useraction(){
@@ -102,6 +101,7 @@ class chatService {
       try {
         //user stream
         teamvwtask.userisslivetream();
+        
 
         // user still online
         chatsvctsk.userstillonline();

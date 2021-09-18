@@ -194,6 +194,10 @@ export const chattask = {
       if (!USER_ISKEY) {
         if(memberinvite) memberinvite.remove();
         if (dissolution) dissolution.remove();
+        if (!leave) {
+          const leave = chtbxtool.createleaveitem(chtbxstkitem.chatboxid);
+          memberList.appendChild(leave);
+        }
         break;
       }
       if (!memberinvite) {
@@ -312,10 +316,12 @@ export const chattask = {
 
   br_up_ap_havechange: {value:true, lastvalue:0},
   browser_update_appNotify: function (totalnotice){
-    if(!this.br_up_ap_havechange.value)return;
     switch (this.br_up_ap_havechange.lastvalue) {
-      case totalnotice: return;
+      case totalnotice: this.br_up_ap_havechange.value = false; break;
+      default: this.br_up_ap_havechange.value = true;
     }
+    this.br_up_ap_havechange.lastvalue = totalnotice;
+    if(!this.br_up_ap_havechange.value) return;
     const menunotify = document.getElementById("menunotifyID");
     const menunotifyvalue = document.getElementById("menunotifyvalueID");
     menunotifyvalue.innerHTML = totalnotice;
@@ -326,7 +332,7 @@ export const chattask = {
     }
     menunotify.classList.add("havenotify");
     menunotify.classList.remove("notify");
-    this.br_up_ap_havechange.lastvalue = totalnotice;
+
   },
 
   browser_update_recentnotice: function (id, totalnoticecount) {
