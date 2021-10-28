@@ -1,6 +1,6 @@
 express --view=hbs myChatapp
 npm install
-npm install --save-dev typescript
+npm install --save-dev typescripts
 npm audit fix
 npm install --save-dev tslint
 npm install --save-dev @types/node @types/express

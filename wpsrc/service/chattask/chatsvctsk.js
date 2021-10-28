@@ -110,14 +110,12 @@ export const chatsvctsk = {
     }, 50);
 
     new Promise(async function(resolve, reject) {
-      for (var item of chatboxlist) {
+      for (var item of APPDATA.chatboxlist) {
         await sleep(accessdelay);
         const members = await getchatboxMember(item.chatboxid);
         if (members) {delete item.members; item.members = members};
       }
-    }).then((chatboxlist)=>{
-      delete APPDATA.chatboxlist;
-      APPDATA.chatboxlist = chatboxlist;
+      resolve(chatboxlist);
     });
   },
 
